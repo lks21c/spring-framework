@@ -20,9 +20,8 @@ import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * Simple {@link ConfigurableEnvironment} implementation exposing
- * {@link #setProperty(String, String)} and {@link #withProperty(String, String)}
- * methods for testing purposes.
+  * 간단한 {@link ConfigurableEnvironment}의 구현으로 {@link #setProperty(String, String)} 와
+ * {@link #withProperty(String, String)} 메서드를 테스트 목적으로 제공한다.
  *
  * @author Chris Beams
  * @author Sam Brannen
@@ -34,23 +33,23 @@ public class MockEnvironment extends AbstractEnvironment {
 	private MockPropertySource propertySource = new MockPropertySource();
 
 	/**
-	 * Create a new {@code MockEnvironment} with a single {@link MockPropertySource}.
+        * 하나의 {@link MockPropertySource}를 가진 {@code MockEnvironment}를 생성함.
 	 */
 	public MockEnvironment() {
 		getPropertySources().addLast(propertySource);
 	}
 
 	/**
-	 * Set a property on the underlying {@link MockPropertySource} for this environment.
+	 * MockEnvironment의 {@link MockPropertySource}에 property를 set함.
 	 */
 	public void setProperty(String key, String value) {
 		propertySource.setProperty(key, value);
 	}
 
 	/**
-	 * Convenient synonym for {@link #setProperty} that returns the current instance.
+	 * 편리하게 {@link #setProperty} 대신 쓸수 있는 메서드.
 	 * Useful for method chaining and fluent-style use.
-	 * @return this {@link MockEnvironment} instance
+	 * @return 현재 {@link MockEnvironment} 인스턴스를 리턴함
 	 * @see MockPropertySource#withProperty
 	 */
 	public MockEnvironment withProperty(String key, String value) {
