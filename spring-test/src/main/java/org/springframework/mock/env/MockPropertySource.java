@@ -16,15 +16,15 @@
 
 package org.springframework.mock.env;
 
-import java.util.Properties;
-
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import java.util.Properties;
 
 /**
  * 유닛 테스트를 위한 간단한 {@link PropertySource} 구현. <br />
  * 사용자가 지정한 프로퍼티 이름과 프로퍼티를 사용하거나, <br />
- * {@link MOCK_PROPERTIES_PROPERTY_SOURCE_NAME} 이름으로 프로퍼티를 생성 할 수 있음. <br />
+ * {@code MOCK_PROPERTIES_PROPERTY_SOURCE_NAME} 이름으로 프로퍼티를 생성 할 수 있음. <br />
  * 
  *
  * @author Chris Beams
@@ -55,7 +55,7 @@ public class MockPropertySource extends PropertiesPropertySource {
 	 * 프로퍼티 이름 : 사용할 프로퍼티 이름을 파라미터로 지정 <br />
 	 * 프로퍼티 : 프로퍼티는 내부에서 인스턴스 생성.
 	 * 
-	 * @param 프로퍼티 소스의 이름을 지정
+	 * @param name Properties 소스의 이름을 지정
 	 */
 	public MockPropertySource(String name) {
 		this(name, new Properties());
@@ -77,8 +77,8 @@ public class MockPropertySource extends PropertiesPropertySource {
 	 * 프로퍼티 이름 : 사용할 프로퍼티 이름을 파라미터로 지정 <br />
 	 * 프로퍼티 : 사용할 프로퍼티를 파라미터로 지정
 	 * 
-	 * @param 사용할 프로퍼티 이름
-	 * @param 사용할 프로퍼티
+	 * @param name 사용할 프로퍼티 이름
+	 * @param properties 사용할 프로퍼티
 	 */
 	public MockPropertySource(String name, Properties properties) {
 		super(name, properties);
