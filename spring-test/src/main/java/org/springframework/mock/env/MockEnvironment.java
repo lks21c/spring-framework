@@ -20,11 +20,7 @@ import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
-<<<<<<< HEAD
 * 간단한 {@link ConfigurableEnvironment}의 구현으로 {@link #setProperty(String, String)} 와
-=======
-  * 간단한 {@link ConfigurableEnvironment}의 구현으로 {@link #setProperty(String, String)} 와
->>>>>>> 1998ad7d4b2bb99275bec9e62139ff849e907ae9
  * {@link #withProperty(String, String)} 메서드를 테스트 목적으로 제공한다.
  *
  * @author Chris Beams
