@@ -34,7 +34,7 @@ import org.springframework.util.StreamUtils;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for {@link MockHttpServletRequest}.
+ * {@link MockHttpServletRequest}의 유닛 테스트.
  *
  * @author Rick Evans
  * @author Mark Fisher
