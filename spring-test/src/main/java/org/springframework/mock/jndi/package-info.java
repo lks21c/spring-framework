@@ -1,9 +1,10 @@
 /**
- * The simplest implementation of the JNDI SPI that could possibly work.
+ * 왠만하면 동작하는 JNDI SPI의 가장 단순한 구현.
  *
- * <p>Useful for setting up a simple JNDI environment for test suites
- * or stand-alone applications. If, for example, JDBC DataSources get bound to the
- * same JNDI names as within a Java EE container, both application code and
- * configuration can be reused without changes.
+ * <p>test suite를 위해서나 stand-alone application에서 단순한 JNDI environment를 준비하는데 유용함.
+ * 예를 들어, JDBC DataSource들이 같은 JNDI 이름으로 Java EE container에 설정되어 있다면,
+ * 어플리케이션 코드와 설정이 변경없이 재활용 가능함.
+ * </p>
+ *
  */
 package org.springframework.mock.jndi;

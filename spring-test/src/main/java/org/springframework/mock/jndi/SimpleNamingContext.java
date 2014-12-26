@@ -16,34 +16,26 @@
 
 package org.springframework.mock.jndi;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
+
+import javax.naming.*;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-import javax.naming.Binding;
-import javax.naming.Context;
-import javax.naming.Name;
-import javax.naming.NameClassPair;
-import javax.naming.NameNotFoundException;
-import javax.naming.NameParser;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.OperationNotSupportedException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.StringUtils;
 
 /**
- * Simple implementation of a JNDI naming context.
- * Only supports binding plain Objects to String names.
- * Mainly for test environments, but also usable for standalone applications.
+ * JNDI naming context의 간단한 구현.
+ * plain Object들과 문자열의 바인딩만 지원함.
+ * 주로 테스트 환경을 위해 유용하지만, standalone application에서도 사용할만함.
  *
- * <p>This class is not intended for direct usage by applications, although it
- * can be used for example to override JndiTemplate's {@code createInitialContext}
- * method in unit tests. Typically, SimpleNamingContextBuilder will be used to
- * set up a JVM-level JNDI environment.
+ * <p>
+ * 이 클래스는 어플리케이션에서 직접적으로 사용하게 하려는 의도는 아니지만,
+ * (예를 들어) JndiTemplate의 {@code createInitialContext} 메서드를 유닛 테스트 하기 위해 사용할수 있다.
+ * 일반적으로, SimpleNamingContextBuilder가 JVM-level JNDI environment를 준비하기 위해 쓰인다.
+ * </p>
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -62,14 +54,14 @@ public class SimpleNamingContext implements Context {
 
 
 	/**
-	 * Create a new naming context.
+	 * 새로운 naming context를 생성함.
 	 */
 	public SimpleNamingContext() {
 		this("");
 	}
 
 	/**
-	 * Create a new naming context with the given naming root.
+	 * 주어진 이름의 root로 새로운 naming context를 생성함.
 	 */
 	public SimpleNamingContext(String root) {
 		this.root = root;
@@ -77,8 +69,10 @@ public class SimpleNamingContext implements Context {
 	}
 
 	/**
-	 * Create a new naming context with the given naming root,
-	 * the given name/object map, and the JNDI environment entries.
+	 * 새로운 naming context를 생성함.
+	 * @parameter root 주어진 이름을 naming context의 root로 사용
+	 * @parameter boundObjects 주어진 map을 사용
+	 * @parameter env JNDI environment 엔트리
 	 */
 	public SimpleNamingContext(String root, Hashtable<String, Object> boundObjects, Hashtable<String, Object> env) {
 		this.root = root;
@@ -89,7 +83,7 @@ public class SimpleNamingContext implements Context {
 	}
 
 
-	// Actual implementations of Context methods follow
+	// 아래는 Context 메소드들의 실제 구현들.
 
 	@Override
 	public NamingEnumeration<NameClassPair> list(String root) throws NamingException {
@@ -108,10 +102,11 @@ public class SimpleNamingContext implements Context {
 	}
 
 	/**
-	 * Look up the object with the given name.
-	 * <p>Note: Not intended for direct use by applications.
-	 * Will be used by any standard InitialContext JNDI lookups.
-	 * @throws javax.naming.NameNotFoundException if the object could not be found
+	 * 주어진 이름으로 object를 look up.
+	 * <p>
+	 * 노트 : 어플리케이션에서 직접 사용하기 위한 의도로 구현된게 아님.
+	 * standard InitialContext JNDI lookups에서 사용될듯.
+	 * @throws javax.naming.NameNotFoundException object를 찾을 수 없을 때 발생
 	 */
 	@Override
 	public Object lookup(String lookupName) throws NameNotFoundException {
@@ -145,10 +140,11 @@ public class SimpleNamingContext implements Context {
 	}
 
 	/**
-	 * Bind the given object to the given name.
-	 * Note: Not intended for direct use by applications
-	 * if setting up a JVM-level JNDI environment.
-	 * Use SimpleNamingContextBuilder to set up JNDI bindings then.
+	 * 주어진 이름으로 주어진 Object를 바인딩함.
+	 *
+	 * <p>
+	 * 노트 : JVM-level JNDI environment에서 준비된다면 어플리케이션에서 직접 사용하기 위한 의도로 구현된게 아님.
+	 * 그럴때는 SimpleNamingContextBuilder로 JNDI 바인딩을 사용하길 권장함.
 	 * @see org.springframework.mock.jndi.SimpleNamingContextBuilder#bind
 	 */
 	@Override
@@ -220,7 +216,7 @@ public class SimpleNamingContext implements Context {
 	}
 
 
-	// Unsupported methods follow: no support for javax.naming.Name
+	// 아래 메서드들은 지원하지 않음: javax.naming.Name에 있으나 지원하지 않음
 
 	@Override
 	public NamingEnumeration<NameClassPair> list(Name name) throws NamingException {

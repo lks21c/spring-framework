@@ -16,16 +16,16 @@
 
 package org.springframework.mock.jndi;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.naming.NamingException;
-
 import org.springframework.jndi.JndiTemplate;
 
+import javax.naming.NamingException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * Simple extension of the JndiTemplate class that always returns a given object.
+ * 항상 주어진 object를 리턴하는 JndiTemplate의 간단한 확장
  *
- * <p>Very useful for testing. Effectively a mock object.
+ * <p>테스팅을 위해 매우 유용함. 효과적인 mock object.</p>
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -36,18 +36,19 @@ public class ExpectedLookupTemplate extends JndiTemplate {
 
 
 	/**
-	 * Construct a new JndiTemplate that will always return given objects for
-	 * given names. To be populated through {@code addObject} calls.
+	 * 항상 주어진 object를 리턴하는 JndiTemplate를 생성함.
+	 * 사용하려면 {@code addObject} 호출이 필요함.
 	 * @see #addObject(String, Object)
 	 */
 	public ExpectedLookupTemplate() {
 	}
 
 	/**
-	 * Construct a new JndiTemplate that will always return the given object,
-	 * but honour only requests for the given name.
-	 * @param name the name the client is expected to look up
-	 * @param object the object that will be returned
+	 * 항상 주어진 object를 리턴하는 새 JndiTemplate를 생성함.
+	 * 하지만, 주어진 이름의 request만 준수함.
+	 *
+	 * @param name 클라이언트가 look up하기를 기대하는 이름
+	 * @param object 리턴 될 object
 	 */
 	public ExpectedLookupTemplate(String name, Object object) {
 		addObject(name, object);
@@ -63,9 +64,9 @@ public class ExpectedLookupTemplate extends JndiTemplate {
 	}
 
 	/**
-	 * If the name is the expected name specified in the constructor, return the
-	 * object provided in the constructor. If the name is unexpected, a
-	 * respective NamingException gets thrown.
+	 * 만약 파라미터의 이름이 생성자에서 지정한 이름이라면, 이미 생성자에서 지정한 object를 리턴함.
+	 * 만약 이름을 못찾으면 NamingException이 발생함.
+	 *
 	 */
 	@Override
 	public Object lookup(String name) throws NamingException {
