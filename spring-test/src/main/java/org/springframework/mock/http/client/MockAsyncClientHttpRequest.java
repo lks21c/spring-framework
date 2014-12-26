@@ -16,19 +16,19 @@
 
 package org.springframework.mock.http.client;
 
-import java.io.IOException;
-import java.net.URI;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.AsyncClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SettableListenableFuture;
 
+import java.io.IOException;
+import java.net.URI;
+
 /**
- * An extension of {@link MockClientHttpRequest} that also implements
- * {@link AsyncClientHttpRequest} by wrapping the response in a
- * {@link SettableListenableFuture}.
+ *
+ * {@link MockClientHttpRequest}를 상속받고 {@link AsyncClientHttpRequest} 인터페이스를 구현함.
+ * response를 {@link SettableListenableFuture}로 wrapping 함.
  *
  * @author Rossen Stoyanchev
  * @author Sam Brannen

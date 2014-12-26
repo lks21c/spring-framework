@@ -15,16 +15,16 @@
  */
 package org.springframework.mock.http.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * Mock implementation of {@link ClientHttpResponse}.
+ * {@link ClientHttpResponse}의 Mock 구현.
  *
  * @author Rossen Stoyanchev
  * @since 3.2
@@ -35,7 +35,7 @@ public class MockClientHttpResponse extends MockHttpInputMessage implements Clie
 
 
 	/**
-	 * Constructor with response body as a byte array.
+	 * byte array 형태의 response body를 포함하여 생성.
 	 */
 	public MockClientHttpResponse(byte[] body, HttpStatus statusCode) {
 		super(body);
@@ -44,7 +44,7 @@ public class MockClientHttpResponse extends MockHttpInputMessage implements Clie
 	}
 
 	/**
-	 * Constructor with response body as InputStream.
+	 * InputStream 형태의 response body를 포함하여 생성.
 	 */
 	public MockClientHttpResponse(InputStream body, HttpStatus statusCode) {
 		super(body);

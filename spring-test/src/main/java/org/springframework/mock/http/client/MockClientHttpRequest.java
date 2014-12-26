@@ -16,16 +16,16 @@
 
 package org.springframework.mock.http.client;
 
-import java.io.IOException;
-import java.net.URI;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.MockHttpOutputMessage;
 
+import java.io.IOException;
+import java.net.URI;
+
 /**
- * Mock implementation of {@link ClientHttpRequest}.
+ * {@link ClientHttpRequest}의 Mock 구현.
  *
  * @author Rossen Stoyanchev
  * @author Sam Brannen
@@ -33,93 +33,93 @@ import org.springframework.mock.http.MockHttpOutputMessage;
  */
 public class MockClientHttpRequest extends MockHttpOutputMessage implements ClientHttpRequest {
 
-	private URI uri;
+    private URI uri;
 
-	private HttpMethod httpMethod;
+    private HttpMethod httpMethod;
 
-	private boolean executed = false;
+    private boolean executed = false;
 
-	private ClientHttpResponse clientHttpResponse;
+    private ClientHttpResponse clientHttpResponse;
 
 
-	/**
-	 * Default constructor.
-	 */
-	public MockClientHttpRequest() {
-	}
+    /**
+     * 기본 생성자.
+     */
+    public MockClientHttpRequest() {
+    }
 
-	/**
-	 * Create an instance with the given HttpMethod and URI.
-	 */
-	public MockClientHttpRequest(HttpMethod httpMethod, URI uri) {
-		this.httpMethod = httpMethod;
-		this.uri = uri;
-	}
+    /**
+     * 주어진 HttpMethod 와 URI로 생성.
+     */
+    public MockClientHttpRequest(HttpMethod httpMethod, URI uri) {
+        this.httpMethod = httpMethod;
+        this.uri = uri;
+    }
 
-	@Override
-	public URI getURI() {
-		return this.uri;
-	}
+    @Override
+    public URI getURI() {
+        return this.uri;
+    }
 
-	public void setURI(URI uri) {
-		this.uri = uri;
-	}
+    public void setURI(URI uri) {
+        this.uri = uri;
+    }
 
-	@Override
-	public HttpMethod getMethod() {
-		return this.httpMethod;
-	}
+    @Override
+    public HttpMethod getMethod() {
+        return this.httpMethod;
+    }
 
-	public void setMethod(HttpMethod httpMethod) {
-		this.httpMethod = httpMethod;
-	}
+    public void setMethod(HttpMethod httpMethod) {
+        this.httpMethod = httpMethod;
+    }
 
-	public void setResponse(ClientHttpResponse clientHttpResponse) {
-		this.clientHttpResponse = clientHttpResponse;
-	}
+    public void setResponse(ClientHttpResponse clientHttpResponse) {
+        this.clientHttpResponse = clientHttpResponse;
+    }
 
-	public boolean isExecuted() {
-		return this.executed;
-	}
+    public boolean isExecuted() {
+        return this.executed;
+    }
 
-	/**
-	 * Set the {@link #isExecuted() executed} flag to {@code true} and return the
-	 * configured {@link #setResponse(ClientHttpResponse) response}.
-	 * @see #executeInternal()
-	 */
-	@Override
-	public final ClientHttpResponse execute() throws IOException {
-		this.executed = true;
-		return executeInternal();
-	}
+    /**
+     * {@link #isExecuted() executed} 플래그를 {@code true}로 설정 <br />
+     * {@link #setResponse(ClientHttpResponse) response}를 리턴.
+     *
+     * @see #executeInternal()
+     */
+    @Override
+    public final ClientHttpResponse execute() throws IOException {
+        this.executed = true;
+        return executeInternal();
+    }
 
-	/**
-	 * The default implementation returns the configured
-	 * {@link #setResponse(ClientHttpResponse) response}.
-	 *
-	 * <p>Override this method to execute the request and provide a response,
-	 * potentially different than the configured response.
-	 */
-	protected ClientHttpResponse executeInternal() throws IOException {
-		return this.clientHttpResponse;
-	}
+    /**
+     * 기본 구현은 {@link #setResponse(ClientHttpResponse) response}로 설정된 값을 리턴.
+     * <p>
+     * <p>request를 실행하고 response를 제공해 주기 위해 이 메서드를 오버라이드 필요.
+     * 잠재적으로 설정된 response와 다름.
+     */
+    protected ClientHttpResponse executeInternal() throws IOException {
+        return this.clientHttpResponse;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		if (this.httpMethod != null) {
-			sb.append(this.httpMethod);
-		}
-		if (this.uri != null) {
-			sb.append(" ").append(this.uri);
-		}
-		if (!getHeaders().isEmpty()) {
-			sb.append(", headers : ").append(getHeaders());
-		}
-		if (sb.length() == 0) {
-			sb.append("Not yet initialized");
-		}
-		return sb.toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (this.httpMethod != null) {
+            sb.append(this.httpMethod);
+        }
+        if (this.uri != null) {
+            sb.append(" ").append(this.uri);
+        }
+        if (!getHeaders().isEmpty()) {
+            sb.append(", headers : ").append(getHeaders());
+        }
+        if (sb.length() == 0) {
+            sb.append("Not yet initialized");
+        }
+        return sb.toString();
+    }
 
 }
