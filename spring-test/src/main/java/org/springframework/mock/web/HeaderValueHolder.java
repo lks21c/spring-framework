@@ -16,18 +16,13 @@
 
 package org.springframework.mock.web;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.util.*;
+
 /**
- * Internal helper class that serves as value holder for request headers.
+ * request 헤더를 위한 값들을 들고있는 내부 helper 클래스.
  *
  * @author Juergen Hoeller
  * @author Rick Evans
@@ -36,7 +31,6 @@ import org.springframework.util.CollectionUtils;
 class HeaderValueHolder {
 
 	private final List<Object> values = new LinkedList<Object>();
-
 
 	public void setValue(Object value) {
 		this.values.clear();
@@ -77,11 +71,10 @@ class HeaderValueHolder {
 
 
 	/**
-	 * Find a HeaderValueHolder by name, ignoring casing.
-	 * @param headers the Map of header names to HeaderValueHolders
-	 * @param name the name of the desired header
-	 * @return the corresponding HeaderValueHolder,
-	 * or {@code null} if none found
+	 * 들고있는 헤더 값을 이름으로 찾음, 대소문자 구분 없음.
+	 * @param headers HeaderValueHolders값을 지닌 헤더 이름들의 Map
+	 * @param name 원하는 헤더의 이름
+	 * @return 검색된 HeaderValueHolder나 못찾았을 때 {@code null} 리턴.
 	 */
 	public static HeaderValueHolder getByName(Map<String, HeaderValueHolder> headers, String name) {
 		Assert.notNull(name, "Header name must not be null");

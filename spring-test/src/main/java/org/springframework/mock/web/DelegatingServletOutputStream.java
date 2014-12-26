@@ -16,59 +16,62 @@
 
 package org.springframework.mock.web;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import javax.servlet.ServletOutputStream;
-
 import org.springframework.util.Assert;
 
+import javax.servlet.ServletOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
- * Delegating implementation of {@link javax.servlet.ServletOutputStream}.
- *
- * <p>Used by {@link MockHttpServletResponse}; typically not directly
- * used for testing application controllers.
+ * {@link javax.servlet.ServletOutputStream}를 전달하는 구현.
+ * <p>
+ * * <p>
+ * {@link MockHttpServletResponse}에서 사용함; 일반적으로 testing application controller에서 직접적으로 쓰지 않음.
+ * </p>
  *
  * @author Juergen Hoeller
- * @since 1.0.2
  * @see MockHttpServletResponse
+ * @since 1.0.2
  */
 public class DelegatingServletOutputStream extends ServletOutputStream {
 
-	private final OutputStream targetStream;
+    private final OutputStream targetStream;
 
 
-	/**
-	 * Create a DelegatingServletOutputStream for the given target stream.
-	 * @param targetStream the target stream (never {@code null})
-	 */
-	public DelegatingServletOutputStream(OutputStream targetStream) {
-		Assert.notNull(targetStream, "Target OutputStream must not be null");
-		this.targetStream = targetStream;
-	}
+    /**
+     * 주어진 OutputStream으로 DelegatingServletOutputStream 생성함.
+     * Create a DelegatingServletOutputStream for the given target stream.
+     *
+     * @param targetStream target stream(절대 {@code null}이면 안됨).
+     */
+    public DelegatingServletOutputStream(OutputStream targetStream) {
+        Assert.notNull(targetStream, "Target OutputStream must not be null");
+        this.targetStream = targetStream;
+    }
 
-	/**
-	 * Return the underlying target stream (never {@code null}).
-	 */
-	public final OutputStream getTargetStream() {
-		return this.targetStream;
-	}
+    /**
+     * target stream를 리턴함(절대 {@code null}이면 안됨).
+     */
+    public final OutputStream getTargetStream() {
+        return this.targetStream;
+    }
 
 
-	@Override
-	public void write(int b) throws IOException {
-		this.targetStream.write(b);
-	}
+    @Override
+    public void write(int b) throws IOException {
+        this.targetStream.write(b);
+    }
 
-	@Override
-	public void flush() throws IOException {
-		super.flush();
-		this.targetStream.flush();
-	}
+    @Override
+    public void flush() throws IOException {
+        super.flush();
+        this.targetStream.flush();
+    }
 
-	@Override
-	public void close() throws IOException {
-		super.close();
-		this.targetStream.close();
-	}
+    @Override
+    public void close() throws IOException {
+        super.close();
+        this.targetStream.close();
+    }
 
 }

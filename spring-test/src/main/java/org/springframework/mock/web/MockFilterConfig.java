@@ -16,20 +16,19 @@
 
 package org.springframework.mock.web;
 
+import org.springframework.util.Assert;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-
-import org.springframework.util.Assert;
 
 /**
- * Mock implementation of the {@link javax.servlet.FilterConfig} interface.
+ * {@link javax.servlet.FilterConfig} 인터페이스의 mock 구현.
  *
- * <p>Used for testing the web framework; also useful for testing
- * custom {@link javax.servlet.Filter} implementations.
+ * <p>web framework테스트에 사용함; 또한 커스텀 {@link javax.servlet.Filter} 구현 테스트에 유용함.
  *
  * @author Juergen Hoeller
  * @since 1.0.2
@@ -46,22 +45,22 @@ public class MockFilterConfig implements FilterConfig {
 
 
 	/**
-	 * Create a new MockFilterConfig with a default {@link MockServletContext}.
+	 * 기본 {@link MockServletContext}와 함께 MockFilterConfig를 생성함.
 	 */
 	public MockFilterConfig() {
 		this(null, "");
 	}
 
 	/**
-	 * Create a new MockFilterConfig with a default {@link MockServletContext}.
-	 * @param filterName the name of the filter
+	 * 기본 {@link MockServletContext}와 함께 MockFilterConfig를 생성함.
+	 * @param filterName 필터이름
 	 */
 	public MockFilterConfig(String filterName) {
 		this(null, filterName);
 	}
 
 	/**
-	 * Create a new MockFilterConfig.
+	 * CMockFilterConfig를 생성함.
 	 * @param servletContext the ServletContext that the servlet runs in
 	 */
 	public MockFilterConfig(ServletContext servletContext) {
@@ -70,8 +69,8 @@ public class MockFilterConfig implements FilterConfig {
 
 	/**
 	 * Create a new MockFilterConfig.
-	 * @param servletContext the ServletContext that the servlet runs in
-	 * @param filterName the name of the filter
+	 * @param servletContext servlet이 실행될 ServletContext
+	 * @param filterName 필터이름
 	 */
 	public MockFilterConfig(ServletContext servletContext, String filterName) {
 		this.servletContext = (servletContext != null ? servletContext : new MockServletContext());

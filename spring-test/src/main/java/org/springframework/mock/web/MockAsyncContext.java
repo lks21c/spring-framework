@@ -15,25 +15,19 @@
  */
 package org.springframework.mock.web;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.AsyncContext;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Mock implementation of the {@link AsyncContext} interface.
+ * {@link AsyncContext} 인터페이스의 Mock 구현.
  *
  * @author Rossen Stoyanchev
  * @since 3.2
@@ -48,16 +42,14 @@ public class MockAsyncContext implements AsyncContext {
 
 	private String dispatchedPath;
 
-	private long timeout = 10 * 1000L;	// 10 seconds is Tomcat's default
+	private long timeout = 10 * 1000L;	// 톰캣 기본값인 10초
 
 	private final List<Runnable> dispatchHandlers = new ArrayList<Runnable>();
-
 
 	public MockAsyncContext(ServletRequest request, ServletResponse response) {
 		this.request = (HttpServletRequest) request;
 		this.response = (HttpServletResponse) response;
 	}
-
 
 	public void addDispatchHandler(Runnable handler) {
 		Assert.notNull(handler);

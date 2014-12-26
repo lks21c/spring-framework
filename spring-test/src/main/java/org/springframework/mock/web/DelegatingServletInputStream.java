@@ -16,17 +16,18 @@
 
 package org.springframework.mock.web;
 
-import java.io.IOException;
-import java.io.InputStream;
-import javax.servlet.ServletInputStream;
-
 import org.springframework.util.Assert;
 
+import javax.servlet.ServletInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * Delegating implementation of {@link javax.servlet.ServletInputStream}.
+ * {@link javax.servlet.ServletInputStream}를 전달하는 구현.
  *
- * <p>Used by {@link MockHttpServletRequest}; typically not directly
- * used for testing application controllers.
+ * <p>
+ * {@link MockHttpServletRequest}에서 사용함; 일반적으로 testing application controller에서 직접적으로 쓰지 않음.
+ * </p>
  *
  * @author Juergen Hoeller
  * @since 1.0.2
@@ -38,8 +39,9 @@ public class DelegatingServletInputStream extends ServletInputStream {
 
 
 	/**
-	 * Create a DelegatingServletInputStream for the given source stream.
-	 * @param sourceStream the source stream (never {@code null})
+	 *
+	 * 주어진 InputStream으로 DelegatingServletInputStream을 생성함.
+	 * @param sourceStream source stream(절대 {@code null}이면 안됨)
 	 */
 	public DelegatingServletInputStream(InputStream sourceStream) {
 		Assert.notNull(sourceStream, "Source InputStream must not be null");
@@ -47,7 +49,7 @@ public class DelegatingServletInputStream extends ServletInputStream {
 	}
 
 	/**
-	 * Return the underlying source stream (never {@code null}).
+	 * source stream을 리턴함(절대 {@code null}이면 안됨).
 	 */
 	public final InputStream getSourceStream() {
 		return this.sourceStream;
