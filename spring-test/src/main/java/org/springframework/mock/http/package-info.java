@@ -1,6 +1,6 @@
 /**
- * Mock implementations of client/server-side HTTP abstractions.
- * This package contains {@code MockHttpInputMessage} and
- * {@code MockHttpOutputMessage}.
+ * client/server-side HTTP 추상화의 Mock 구현.
+ * 이 패키지는 {@code MockHttpInputMessage} 와
+ * {@code MockHttpOutputMessage}를 포함한다.
  */
 package org.springframework.mock.http;

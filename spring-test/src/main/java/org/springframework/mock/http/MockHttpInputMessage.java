@@ -24,22 +24,35 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.util.Assert;
 
 /**
- * Mock implementation of {@link HttpInputMessage}.
+ * {@link HttpInputMessage} 인터페이스의 Mock 구현체.
  *
  * @author Rossen Stoyanchev
  * @since 3.2
  */
 public class MockHttpInputMessage implements HttpInputMessage {
 
+	/**
+	 * {@link HttpHeaders} 참고
+	 */
 	private final HttpHeaders headers = new HttpHeaders();
 
+	/**
+	 * Http Body
+	 */
 	private final InputStream body;
 
-
+	/**
+	 * MockHttpInputMessage 생성자
+	 * @param contents body값으로 쓸 contents 지정
+	 */
 	public MockHttpInputMessage(byte[] contents) {
 		this.body = (contents != null) ? new ByteArrayInputStream(contents) : null;
 	}
 
+	/**
+	 * MockHttpInputMessage 생성자
+	 * @param body body값으로 쓸 contents 지정
+	 */
 	public MockHttpInputMessage(InputStream body) {
 		Assert.notNull(body, "'body' must not be null");
 		this.body = body;

@@ -26,7 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 
 /**
- * Mock implementation of {@link HttpOutputMessage}.
+ * {@link HttpOutputMessage} 인터페이스의 Mock 구현체.
  *
  * @author Rossen Stoyanchev
  * @since 3.2
@@ -41,7 +41,7 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 
 
 	/**
-	 * Return the headers.
+	 * Return 헤더를 리턴
 	 */
 	@Override
 	public HttpHeaders getHeaders() {
@@ -49,7 +49,7 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 	}
 
 	/**
-	 * Return the body content.
+	 * Return Body 컨텐츠를 리턴.
 	 */
 	@Override
 	public OutputStream getBody() throws IOException {
@@ -57,22 +57,22 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 	}
 
 	/**
-	 * Return body content as a byte array.
+	 * Return Body 컨텐츠를 byte array로 리턴.
 	 */
 	public byte[] getBodyAsBytes() {
 		return this.body.toByteArray();
 	}
 
 	/**
-	 * Return the body content interpreted as a UTF-8 string.
+	 * Return Body 컨텐츠를 UTF-8 String으로 리턴.
 	 */
 	public String getBodyAsString() {
 		return getBodyAsString(DEFAULT_CHARSET);
 	}
 
 	/**
-	 * Return the body content as a string.
-	 * @param charset the charset to use to turn the body content to a String
+	 * Return Body 컨텐츠를 String으로 리턴.
+	 * @param charset 리턴할 String의 {@link java.nio.charset.Charset}을 지정
 	 */
 	public String getBodyAsString(Charset charset) {
 		byte[] bytes = getBodyAsBytes();
@@ -80,7 +80,7 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 			return new String(bytes, charset.name());
 		}
 		catch (UnsupportedEncodingException ex) {
-			// should not occur
+			// 발생해서는 안됨
 			throw new IllegalStateException(ex);
 		}
 	}
