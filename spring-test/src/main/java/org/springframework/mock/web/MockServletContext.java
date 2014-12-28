@@ -46,29 +46,25 @@ import java.util.*;
  * 우리는 위에서 언급한 메서들이 사용될 가능성이 잇는 ServletContainerInitializers 와 WebApplicationInitializer 유닛 테스트를 추천하지 않음.
  * <p>
  * <p>
+ * <p>web framework테스트에 사용함; 또한 어플리케이션 컨트롤러 테스트에 유용함.
+ * 어플리케이션 컴포넌트가 명시적으로 {@code ServletContext}에 접근하지 않는한,
+ * 테스팅을 위해 @code ClassPathXmlApplicationContext} 나
+ * {@code FileSystemXmlApplicationContext}가 context 로드 용도로 쓰일수 있음.
+ * 심지어 {@code DispatcherServlet} context 정의 용도로도 사용할 수 있음.
  * <p>
- * <p>Used for testing the Spring web framework; only rarely necessary for testing
- * application controllers. As long as application components don't explicitly
- * access the {@code ServletContext}, {@code ClassPathXmlApplicationContext} or
- * {@code FileSystemXmlApplicationContext} can be used to load the context files
- * for testing, even for {@code DispatcherServlet} context definitions.
  * <p>
- * <p>For setting up a full {@code WebApplicationContext} in a test environment,
- * you can use {@code AnnotationConfigWebApplicationContext},
- * {@code XmlWebApplicationContext}, or {@code GenericWebApplicationContext},
- * passing in an appropriate {@code MockServletContext} instance. You might want
- * to configure your {@code MockServletContext} with a {@code FileSystemResourceLoader}
- * in that case to ensure that resource paths are interpreted as relative filesystem
- * locations.
+ * 테스트 환경에서 완전한 {@code WebApplicationContext}를 setup하기 위해 {@code MockServletContext} 인스턴스를 전달하여
+ * {@code AnnotationConfigWebApplicationContext}나 {@code XmlWebApplicationContext}나 {@code GenericWebApplicationContext}을 사용 할 수 있음
+ * </p>
+ * 상대 파일 경로에서 resource path가 해석되는 것을 확인 하기 위해,
+ * {@code FileSystemResourceLoader}와 함께 {@code MockServletContext}를 설정할수 있음.
  * <p>
- * <p>A common setup is to point your JVM working directory to the root of your
- * web application directory, in combination with filesystem-based resource loading.
- * This allows to load the context files as used in the web application, with
- * relative paths getting interpreted correctly. Such a setup will work with both
- * {@code FileSystemXmlApplicationContext} (which will load straight from the
- * filesystem) and {@code XmlWebApplicationContext} with an underlying
- * {@code MockServletContext} (as long as the {@code MockServletContext} has been
- * configured with a {@code FileSystemResourceLoader}).
+ * <p>
+ * 일반적인 setup은 JVM working 디렉토리를 web 어플리케이션의 디렉토리로 명시하고 파일 base의 리소스 loading을 하는것임.
+ * 이것은 web 어플리케이션에서 쓰일 context 파일들을 상대경로로 읽어 들여 올바르게 해석되는것을 확인해줌.
+ * 이러한 작업은 {@code FileSystemXmlApplicationContext}(파일에서 바로 읽음)와 {@code XmlWebApplicationContext}과
+ * {@code MockServletContext}의 조합({@code FileSystemResourceLoader}를 가지고 {@code MockServletContext}이 설정되었을 경우)으로 가능함.
+ * </p>
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -84,7 +80,7 @@ import java.util.*;
 public class MockServletContext implements ServletContext {
 
     /**
-     * Default Servlet name used by Tomcat, Jetty, JBoss, and GlassFish: {@value}.
+     * 톰캣, 제티, Jboss, GlassFish에서 쓰는 기본 Servlet 이름: {@value}.
      */
     private static final String COMMON_DEFAULT_SERVLET_NAME = "default";
 
@@ -136,8 +132,8 @@ public class MockServletContext implements ServletContext {
 
 
     /**
-     * Create a new {@code MockServletContext}, using no base path and a
-     * {@link DefaultResourceLoader} (i.e. the classpath root as WAR root).
+     * 새 {@code MockServletContext}를 생성함, base path와 {@link DefaultResourceLoader}없음
+     * (i.e. the classpath root as WAR root).
      *
      * @see org.springframework.core.io.DefaultResourceLoader
      */
@@ -146,9 +142,9 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Create a new {@code MockServletContext}, using a {@link DefaultResourceLoader}.
+     * 새 {@code MockServletContext}를 생성함, {@link DefaultResourceLoader}를 사용함.
      *
-     * @param resourceBasePath the root directory of the WAR (should not end with a slash)
+     * @param resourceBasePath WAR의 루트 디렉토리 (슬래쉬로 끝나면 안됨)
      * @see org.springframework.core.io.DefaultResourceLoader
      */
     public MockServletContext(String resourceBasePath) {
@@ -156,30 +152,30 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Create a new {@code MockServletContext}, using the specified {@link ResourceLoader}
-     * and no base path.
+     * 새 {@code MockServletContext}를 생성함, 명시된 {@link ResourceLoader}를 사용함, base path 없음.
      *
-     * @param resourceLoader the ResourceLoader to use (or null for the default)
+     * @param resourceLoader 사용할 ResourceLoader(기본값을 위해서는 {@code null}입력)
      */
     public MockServletContext(ResourceLoader resourceLoader) {
         this("", resourceLoader);
     }
 
     /**
-     * Create a new {@code MockServletContext} using the supplied resource base
-     * path and resource loader.
-     * <p>Registers a {@link MockRequestDispatcher} for the Servlet named
-     * {@literal 'default'}.
+     * 새 {@code MockServletContext}를 생성함, 지정된 resouce base path와 resource loader를 사용함.
+     * <p>
+     * <p>
+     * {@literal 'default'}이름으로 {@link MockRequestDispatcher}를 Servlet으로 등록함.
+     * </p>
      *
-     * @param resourceBasePath the root directory of the WAR (should not end with a slash)
-     * @param resourceLoader   the ResourceLoader to use (or null for the default)
+     * @param resourceBasePath WAR의 루트 디렉토리 (슬래쉬로 끝나면 안됨)
+     * @param resourceLoader   사용할 ResourceLoader(기본값을 위해서는 {@code null}입력)
      * @see #registerNamedDispatcher
      */
     public MockServletContext(String resourceBasePath, ResourceLoader resourceLoader) {
         this.resourceLoader = (resourceLoader != null ? resourceLoader : new DefaultResourceLoader());
         this.resourceBasePath = (resourceBasePath != null ? resourceBasePath : "");
 
-        // Use JVM temp dir as ServletContext temp dir.
+        // JVM temp dir을 ServletContext의 temp dir로 사용함.
         String tempDir = System.getProperty(TEMP_DIR_SYSTEM_PROPERTY);
         if (tempDir != null) {
             this.attributes.put(WebUtils.TEMP_DIR_CONTEXT_ATTRIBUTE, new File(tempDir));
@@ -189,11 +185,10 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Build a full resource location for the given path, prepending the resource
-     * base path of this {@code MockServletContext}.
+     * 주어진 path의 full resouce path를 생성함, {@code MockServletContext}의 resouce base path를 앞에 덧붙임.
      *
-     * @param path the path as specified
-     * @return the full resource path
+     * @param path 명시된 path
+     * @return full resource path
      */
     protected String getResourceLocation(String path) {
         if (!path.startsWith("/")) {
@@ -260,19 +255,19 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * This method uses the default
-     * {@link javax.activation.FileTypeMap#getDefaultFileTypeMap() FileTypeMap}
-     * from the Java Activation Framework to resolve MIME types.
+     * 이 메서드는 MIME type을 해석하기 위해 Java Activation Framework의 {@link javax.activation.FileTypeMap#getDefaultFileTypeMap() FileTypeMap}를
+     * 사용함.
+     * MIME type을 해석할수 없으면 Java Activation Framework는 {@code "application/octet-stream"}을 리턴함.
+     * 그러므로, {@link ServletContext#getMimeType(String)} 규칙을 준수하기 위해
      * <p>The Java Activation Framework returns {@code "application/octet-stream"}
      * if the MIME type is unknown (i.e., it never returns {@code null}). Thus, in
      * order to honor the {@link ServletContext#getMimeType(String)} contract,
-     * this method returns {@code null} if the MIME type is
-     * {@code "application/octet-stream"}.
-     * <p>{@code MockServletContext} does not provide a direct mechanism for
-     * setting a custom MIME type; however, if the default {@code FileTypeMap}
-     * is an instance of {@code javax.activation.MimetypesFileTypeMap}, a custom
-     * MIME type named {@code text/enigma} can be registered for a custom
-     * {@code .puzzle} file extension in the following manner:
+     * MIME type이 {@code "application/octet-stream"}이면 {@code null}을 리턴함.
+     * <p>
+     * {@code MockServletContext}는 Custom MIME type을 설정할수 있는 직접적인 매커니즘 제공하지 않음;
+     * 그러나, 기본 {@code FileTypeMap}이 {@code javax.activation.MimetypesFileTypeMap}의 인스턴스 이면,
+     * Custom MIME type인 {@code text/enigma}이 {@code .puzzle}을 확장자로 아래와 같이 설정 가능함.
+     * <p>
      * <pre style="code">
      * MimetypesFileTypeMap mimetypesFileTypeMap = (MimetypesFileTypeMap) FileTypeMap.getDefaultFileTypeMap();
      * mimetypesFileTypeMap.addMimeTypes("text/enigma    puzzle");
@@ -368,9 +363,9 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Unregister the {@link RequestDispatcher} with the given name.
+     * 주어진 이름의 {@link RequestDispatcher}를 등록해제함.
      *
-     * @param name the name of the dispatcher to unregister
+     * @param name 등록해제할 dispatcher 이름
      * @see #getNamedDispatcher
      * @see #registerNamedDispatcher
      */
@@ -380,7 +375,7 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Get the name of the <em>default</em> {@code Servlet}.
+     * <em>default</em> {@code Servlet}의 이름 보기.
      * <p>Defaults to {@literal 'default'}.
      *
      * @see #setDefaultServletName
@@ -390,14 +385,12 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
-     * Set the name of the <em>default</em> {@code Servlet}.
-     * <p>Also {@link #unregisterNamedDispatcher unregisters} the current default
-     * {@link RequestDispatcher} and {@link #registerNamedDispatcher replaces}
-     * it with a {@link MockRequestDispatcher} for the provided
-     * {@code defaultServletName}.
+     * <em>default</em> {@code Servlet}의 이름 설정함.
+     * 또한, 현재  {@link RequestDispatcher}를 {@link #unregisterNamedDispatcher unregisters}하고
+     * 제공된 이름의 {@code defaultServletName}로 {@link MockRequestDispatcher}을 {@link #registerNamedDispatcher 등록함}
      *
-     * @param defaultServletName the name of the <em>default</em> {@code Servlet};
-     *                           never {@code null} or empty
+     * @param defaultServletName <em>default</em> {@code Servlet} 이름;
+     *                           절대 {@code null} 이나 빈값이 될 수 없음
      * @see #getDefaultServletName
      */
     public void setDefaultServletName(String defaultServletName) {
@@ -671,8 +664,8 @@ public class MockServletContext implements ServletContext {
 
 
     /**
-     * Inner factory class used to introduce a Java Activation Framework
-     * dependency when actually asked to resolve a MIME type.
+     * 내부 팩토리 클래스.
+     * 실제로 MIME type을 해석요청 받을때, Java Activation Framework를 사용한다.
      */
     private static class MimeTypeResolver {
 
