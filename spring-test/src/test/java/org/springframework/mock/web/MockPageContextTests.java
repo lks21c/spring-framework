@@ -16,41 +16,41 @@
 
 package org.springframework.mock.web;
 
-import javax.servlet.jsp.PageContext;
-
 import junit.framework.TestCase;
 
+import javax.servlet.jsp.PageContext;
+
 /**
- * Unit tests for the {@code MockPageContext} class.
+ * {@code MockPageContext} 클래스 유닛 테스트.
  *
  * @author Rick Evans
  */
 public final class MockPageContextTests extends TestCase {
 
-	public void testSetAttributeWithNoScopeUsesPageScope() throws Exception {
-		String key = "foo";
-		String value = "bar";
+    public void testSetAttributeWithNoScopeUsesPageScope() throws Exception {
+        String key = "foo";
+        String value = "bar";
 
-		MockPageContext ctx = new MockPageContext();
-		ctx.setAttribute(key, value);
-		assertEquals(value, ctx.getAttribute(key, PageContext.PAGE_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
-	}
+        MockPageContext ctx = new MockPageContext();
+        ctx.setAttribute(key, value);
+        assertEquals(value, ctx.getAttribute(key, PageContext.PAGE_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+    }
 
-	public void testRemoveAttributeWithNoScopeSpecifiedRemovesValueFromAllScopes() throws Exception {
-		String key = "foo";
-		String value = "bar";
+    public void testRemoveAttributeWithNoScopeSpecifiedRemovesValueFromAllScopes() throws Exception {
+        String key = "foo";
+        String value = "bar";
 
-		MockPageContext ctx = new MockPageContext();
-		ctx.setAttribute(key, value, PageContext.APPLICATION_SCOPE);
-		ctx.removeAttribute(key);
+        MockPageContext ctx = new MockPageContext();
+        ctx.setAttribute(key, value, PageContext.APPLICATION_SCOPE);
+        ctx.removeAttribute(key);
 
-		assertNull(ctx.getAttribute(key, PageContext.PAGE_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
-	}
+        assertNull(ctx.getAttribute(key, PageContext.PAGE_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
+        assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+    }
 
 }

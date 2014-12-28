@@ -16,19 +16,18 @@
 
 package org.springframework.mock.web;
 
+import org.junit.Test;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import javax.servlet.http.HttpServletResponse;
-
-import org.junit.Test;
-
-import org.springframework.web.util.WebUtils;
 
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for {@link MockHttpServletResponse}.
+ * {@link MockHttpServletResponse}의 유닛 테스트.
  *
  * @author Juergen Hoeller
  * @author Rick Evans
