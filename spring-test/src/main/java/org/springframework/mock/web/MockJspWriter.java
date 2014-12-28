@@ -16,202 +16,206 @@
 
 package org.springframework.mock.web;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.JspWriter;
 
 /**
- * Mock implementation of the {@link javax.servlet.jsp.JspWriter} class.
- *
- * <p>Used for testing the web framework; only necessary for testing
- * applications when testing custom JSP tags.
+ * {@link javax.servlet.jsp.JspWriter} 클래스의 mock 구현.
+ * <p>
+ * <p>
+ * web framework테스트에 사용함; 또한 커스텀 jsp 태그 터플리케이션 테스트에 유용함.
+ * <p>
+ * </p>
  *
  * @author Juergen Hoeller
  * @since 2.5
  */
 public class MockJspWriter extends JspWriter {
 
-	private final HttpServletResponse response;
+    private final HttpServletResponse response;
 
-	private PrintWriter targetWriter;
-
-
-	/**
-	 * Create a MockJspWriter for the given response,
-	 * using the response's default Writer.
-	 * @param response the servlet response to wrap
-	 */
-	public MockJspWriter(HttpServletResponse response) {
-		this(response, null);
-	}
-
-	/**
-	 * Create a MockJspWriter for the given plain Writer.
-	 * @param targetWriter the target Writer to wrap
-	 */
-	public MockJspWriter(Writer targetWriter) {
-		this(null, targetWriter);
-	}
-
-	/**
-	 * Create a MockJspWriter for the given response.
-	 * @param response the servlet response to wrap
-	 * @param targetWriter the target Writer to wrap
-	 */
-	public MockJspWriter(HttpServletResponse response, Writer targetWriter) {
-		super(DEFAULT_BUFFER, true);
-		this.response = (response != null ? response : new MockHttpServletResponse());
-		if (targetWriter instanceof PrintWriter) {
-			this.targetWriter = (PrintWriter) targetWriter;
-		}
-		else if (targetWriter != null) {
-			this.targetWriter = new PrintWriter(targetWriter);
-		}
-	}
-
-	/**
-	 * Lazily initialize the target Writer.
-	 */
-	protected PrintWriter getTargetWriter() throws IOException {
-		if (this.targetWriter == null) {
-			this.targetWriter = this.response.getWriter();
-		}
-		return this.targetWriter;
-	}
+    private PrintWriter targetWriter;
 
 
-	@Override
-	public void clear() throws IOException {
-		if (this.response.isCommitted()) {
-			throw new IOException("Response already committed");
-		}
-		this.response.resetBuffer();
-	}
+    /**
+     * 주어진 response로 MockJspWriter를 생성함.
+     * response의 기본 Writer를 사용함.
+     *
+     * @param response 감쌀 servlet response
+     */
+    public MockJspWriter(HttpServletResponse response) {
+        this(response, null);
+    }
 
-	@Override
-	public void clearBuffer() throws IOException {
-	}
+    /**
+     * 주어진 plain Writer로 MockJspWriter를 생성함.
+     *
+     * @param targetWriter 감쌀 target Writer
+     */
+    public MockJspWriter(Writer targetWriter) {
+        this(null, targetWriter);
+    }
 
-	@Override
-	public void flush() throws IOException {
-		this.response.flushBuffer();
-	}
+    /**
+     * 주어진 response로 MockJspWriter를 생성함.
+     *
+     * @param response 감쌀 servlet response
+     * @param targetWriter 감쌀 target Writer
+     */
+    public MockJspWriter(HttpServletResponse response, Writer targetWriter) {
+        super(DEFAULT_BUFFER, true);
+        this.response = (response != null ? response : new MockHttpServletResponse());
+        if (targetWriter instanceof PrintWriter) {
+            this.targetWriter = (PrintWriter) targetWriter;
+        } else if (targetWriter != null) {
+            this.targetWriter = new PrintWriter(targetWriter);
+        }
+    }
 
-	@Override
-	public void close() throws IOException {
-		flush();
-	}
+    /**
+     * target Writer를 늦게 초기화함.
+     */
+    protected PrintWriter getTargetWriter() throws IOException {
+        if (this.targetWriter == null) {
+            this.targetWriter = this.response.getWriter();
+        }
+        return this.targetWriter;
+    }
 
-	@Override
-	public int getRemaining() {
-		return Integer.MAX_VALUE;
-	}
 
-	@Override
-	public void newLine() throws IOException {
-		getTargetWriter().println();
-	}
+    @Override
+    public void clear() throws IOException {
+        if (this.response.isCommitted()) {
+            throw new IOException("Response already committed");
+        }
+        this.response.resetBuffer();
+    }
 
-	@Override
-	public void write(char value[], int offset, int length) throws IOException {
-		getTargetWriter().write(value, offset, length);
-	}
+    @Override
+    public void clearBuffer() throws IOException {
+    }
 
-	@Override
-	public void print(boolean value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void flush() throws IOException {
+        this.response.flushBuffer();
+    }
 
-	@Override
-	public void print(char value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void close() throws IOException {
+        flush();
+    }
 
-	@Override
-	public void print(char[] value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public int getRemaining() {
+        return Integer.MAX_VALUE;
+    }
 
-	@Override
-	public void print(double value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void newLine() throws IOException {
+        getTargetWriter().println();
+    }
 
-	@Override
-	public void print(float value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void write(char value[], int offset, int length) throws IOException {
+        getTargetWriter().write(value, offset, length);
+    }
 
-	@Override
-	public void print(int value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void print(boolean value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void print(long value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void print(char value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void print(Object value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void print(char[] value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void print(String value) throws IOException {
-		getTargetWriter().print(value);
-	}
+    @Override
+    public void print(double value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println() throws IOException {
-		getTargetWriter().println();
-	}
+    @Override
+    public void print(float value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println(boolean value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void print(int value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println(char value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void print(long value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println(char[] value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void print(Object value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println(double value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void print(String value) throws IOException {
+        getTargetWriter().print(value);
+    }
 
-	@Override
-	public void println(float value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void println() throws IOException {
+        getTargetWriter().println();
+    }
 
-	@Override
-	public void println(int value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void println(boolean value) throws IOException {
+        getTargetWriter().println(value);
+    }
 
-	@Override
-	public void println(long value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void println(char value) throws IOException {
+        getTargetWriter().println(value);
+    }
 
-	@Override
-	public void println(Object value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void println(char[] value) throws IOException {
+        getTargetWriter().println(value);
+    }
 
-	@Override
-	public void println(String value) throws IOException {
-		getTargetWriter().println(value);
-	}
+    @Override
+    public void println(double value) throws IOException {
+        getTargetWriter().println(value);
+    }
+
+    @Override
+    public void println(float value) throws IOException {
+        getTargetWriter().println(value);
+    }
+
+    @Override
+    public void println(int value) throws IOException {
+        getTargetWriter().println(value);
+    }
+
+    @Override
+    public void println(long value) throws IOException {
+        getTargetWriter().println(value);
+    }
+
+    @Override
+    public void println(Object value) throws IOException {
+        getTargetWriter().println(value);
+    }
+
+    @Override
+    public void println(String value) throws IOException {
+        getTargetWriter().println(value);
+    }
 
 }

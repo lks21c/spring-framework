@@ -16,13 +16,6 @@
 
 package org.springframework.mock.web;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.ServletContext;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
@@ -31,9 +24,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.ServletContext;
+import java.util.*;
+
 /**
  * Mock implementation of the
- * {@link org.springframework.web.multipart.MultipartHttpServletRequest} interface.
+ * {@link org.springframework.web.multipart.MultipartHttpServletRequest} 인터페이스의 mock 구현.
  *
  * <p>As of Spring 4.0, this set of mocks is designed on a Servlet 3.0 baseline.
  *

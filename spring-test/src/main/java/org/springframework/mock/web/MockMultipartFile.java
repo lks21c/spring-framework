@@ -16,124 +16,129 @@
 
 package org.springframework.mock.web;
 
+import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.springframework.util.Assert;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 /**
- * Mock implementation of the {@link org.springframework.web.multipart.MultipartFile}
- * interface.
- *
- * <p>Useful in conjunction with a {@link MockMultipartHttpServletRequest}
- * for testing application controllers that access multipart uploads.
+ * {@link org.springframework.web.multipart.MultipartFile} 인터페이스의 mock 구현.
+ * <p>
+ * <p>
+ * {@link MockMultipartHttpServletRequest}와의 조합하여 multipart 업로드에 접근하는 어플리케이션 컨트롤러
+ * 테스트에 유용함.
+ * </p>
  *
  * @author Juergen Hoeller
  * @author Eric Crampton
- * @since 2.0
  * @see MockMultipartHttpServletRequest
+ * @since 2.0
  */
 public class MockMultipartFile implements MultipartFile {
 
-	private final String name;
+    private final String name;
 
-	private String originalFilename;
+    private String originalFilename;
 
-	private String contentType;
+    private String contentType;
 
-	private final byte[] content;
+    private final byte[] content;
 
 
-	/**
-	 * Create a new MockMultipartFile with the given content.
-	 * @param name the name of the file
-	 * @param content the content of the file
-	 */
-	public MockMultipartFile(String name, byte[] content) {
-		this(name, "", null, content);
-	}
+    /**
+     * 주어진 content로 MockMultipartFile을 생성함.
+     *
+     * @param name    주어진 파일이름
+     * @param content content 파일
+     */
+    public MockMultipartFile(String name, byte[] content) {
+        this(name, "", null, content);
+    }
 
-	/**
-	 * Create a new MockMultipartFile with the given content.
-	 * @param name the name of the file
-	 * @param contentStream the content of the file as stream
-	 * @throws IOException if reading from the stream failed
-	 */
-	public MockMultipartFile(String name, InputStream contentStream) throws IOException {
-		this(name, "", null, FileCopyUtils.copyToByteArray(contentStream));
-	}
+    /**
+     * 주어진 content로 MockMultipartFile을 생성함.
+     *
+     * @param name    주어진 파일이름
+     * @param contentStream {@code InputStream} 형태의 content 파일
+     * @throws IOException stream 읽기에 실패 시 발생
+     */
+    public MockMultipartFile(String name, InputStream contentStream) throws IOException {
+        this(name, "", null, FileCopyUtils.copyToByteArray(contentStream));
+    }
 
-	/**
-	 * Create a new MockMultipartFile with the given content.
-	 * @param name the name of the file
-	 * @param originalFilename the original filename (as on the client's machine)
-	 * @param contentType the content type (if known)
-	 * @param content the content of the file
-	 */
-	public MockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
-		Assert.hasLength(name, "Name must not be null");
-		this.name = name;
-		this.originalFilename = (originalFilename != null ? originalFilename : "");
-		this.contentType = contentType;
-		this.content = (content != null ? content : new byte[0]);
-	}
+    /**
+     * 주어진 content로 MockMultipartFile을 생성함.
+     *
+     * @param name    주어진 파일이름
+     * @param originalFilename 원본 파일 이름(클라이언트 머신에 따라)
+     * @param contentType      컨텐트 타입(알려져 있으면)
+     * @param content content 파일
+     */
+    public MockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
+        Assert.hasLength(name, "Name must not be null");
+        this.name = name;
+        this.originalFilename = (originalFilename != null ? originalFilename : "");
+        this.contentType = contentType;
+        this.content = (content != null ? content : new byte[0]);
+    }
 
-	/**
-	 * Create a new MockMultipartFile with the given content.
-	 * @param name the name of the file
-	 * @param originalFilename the original filename (as on the client's machine)
-	 * @param contentType the content type (if known)
-	 * @param contentStream the content of the file as stream
-	 * @throws IOException if reading from the stream failed
-	 */
-	public MockMultipartFile(String name, String originalFilename, String contentType, InputStream contentStream)
-			throws IOException {
+    /**
+     * 주어진 content로 MockMultipartFile을 생성함.
+     *
+     * @param name    주어진 파일이름
+     * @param originalFilename 원본 파일 이름(클라이언트 머신에 따라)
+     * @param contentType      컨텐트 타입(알려져 있으면)
+     * @param contentStream {@code InputStream} 형태의 content 파일
+     * @throws IOException stream 읽기에 실패 시 발생
+     */
+    public MockMultipartFile(String name, String originalFilename, String contentType, InputStream contentStream)
+            throws IOException {
 
-		this(name, originalFilename, contentType, FileCopyUtils.copyToByteArray(contentStream));
-	}
+        this(name, originalFilename, contentType, FileCopyUtils.copyToByteArray(contentStream));
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	@Override
-	public String getOriginalFilename() {
-		return this.originalFilename;
-	}
+    @Override
+    public String getOriginalFilename() {
+        return this.originalFilename;
+    }
 
-	@Override
-	public String getContentType() {
-		return this.contentType;
-	}
+    @Override
+    public String getContentType() {
+        return this.contentType;
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return (this.content.length == 0);
-	}
+    @Override
+    public boolean isEmpty() {
+        return (this.content.length == 0);
+    }
 
-	@Override
-	public long getSize() {
-		return this.content.length;
-	}
+    @Override
+    public long getSize() {
+        return this.content.length;
+    }
 
-	@Override
-	public byte[] getBytes() throws IOException {
-		return this.content;
-	}
+    @Override
+    public byte[] getBytes() throws IOException {
+        return this.content;
+    }
 
-	@Override
-	public InputStream getInputStream() throws IOException {
-		return new ByteArrayInputStream(this.content);
-	}
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return new ByteArrayInputStream(this.content);
+    }
 
-	@Override
-	public void transferTo(File dest) throws IOException, IllegalStateException {
-		FileCopyUtils.copy(this.content, dest);
-	}
+    @Override
+    public void transferTo(File dest) throws IOException, IllegalStateException {
+        FileCopyUtils.copy(this.content, dest);
+    }
 
 }

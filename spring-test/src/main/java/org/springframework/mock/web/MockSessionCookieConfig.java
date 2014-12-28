@@ -19,7 +19,7 @@ package org.springframework.mock.web;
 import javax.servlet.SessionCookieConfig;
 
 /**
- * Mock implementation of the {@link javax.servlet.SessionCookieConfig} interface.
+ * {@link javax.servlet.SessionCookieConfig} 인터페이스의 구현체.
  *
  * @author Juergen Hoeller
  * @since 4.0
