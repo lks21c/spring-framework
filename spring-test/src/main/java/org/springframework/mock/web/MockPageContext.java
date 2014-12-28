@@ -35,11 +35,9 @@ import java.util.*;
  * <p>
  * 웹 프레임워크 테스트에 유용함; 커스텀 jsp 태그 테스트에서만 필요함.
  * <p>
- * 노트:
+ * 노트: {@code PageContext.initialize} 메서드를 통한 초기화 보다 생성자에 의한 초기화를 기대함.
+ * JspWriter, request dispatching, {@code handlePageException} 호출을 지원하지 않음
  * <p>
- * <p>Note: Expects initialization via the constructor rather than via the
- * {@code PageContext.initialize} method. Does not support writing to
- * a JspWriter, request dispatching, and {@code handlePageException} calls.
  *
  * @author Juergen Hoeller
  * @since 1.0.2
@@ -61,56 +59,56 @@ public class MockPageContext extends PageContext {
 
 
     /**
-     * Create new MockPageContext with a default {@link MockServletContext},
+     * 기본 @link MockServletContext},
      * {@link MockHttpServletRequest}, {@link MockHttpServletResponse},
-     * {@link MockServletConfig}.
+     * {@link MockServletConfig}로 MockPageContext을 생성
      */
     public MockPageContext() {
         this(null, null, null, null);
     }
 
     /**
-     * Create new MockPageContext with a default {@link MockHttpServletRequest},
-     * {@link MockHttpServletResponse}, {@link MockServletConfig}.
+     * 기본 {@link MockHttpServletRequest},
+     * {@link MockHttpServletResponse}, {@link MockServletConfig}로 MockPageContext 생성.
      *
-     * @param servletContext the ServletContext that the JSP page runs in
-     *                       (only necessary when actually accessing the ServletContext)
+     * @param servletContext JSP 페이지가 실행될 ServletContext
+     *                       (실제 ServletContext에 접근되는 경우에만 필요)
      */
     public MockPageContext(ServletContext servletContext) {
         this(servletContext, null, null, null);
     }
 
     /**
-     * Create new MockPageContext with a MockHttpServletResponse,
-     * MockServletConfig.
+     * MockHttpServletResponse,
+     * MockServletConfig로 MockPageContext 생성.
      *
-     * @param servletContext the ServletContext that the JSP page runs in
-     * @param request        the current HttpServletRequest
-     *                       (only necessary when actually accessing the request)
+     * @param servletContext JSP 페이지가 실행될 ServletContext
+     * @param request        현재 HttpServletRequest
+     *                       (실제 ServletContext에 접근되는 경우에만 필요)
      */
     public MockPageContext(ServletContext servletContext, HttpServletRequest request) {
         this(servletContext, request, null, null);
     }
 
     /**
-     * Create new MockPageContext with a MockServletConfig.
+     * MockServletConfig로 MockPageContext 생성.
      *
-     * @param servletContext the ServletContext that the JSP page runs in
-     * @param request        the current HttpServletRequest
-     * @param response       the current HttpServletResponse
-     *                       (only necessary when actually writing to the response)
+     * @param servletContext JSP 페이지가 실행될 ServletContext
+     * @param request        현재 HttpServletRequest
+     * @param response       현재 HttpServletResponse
+     *                       (실제 ServletContext에 접근되는 경우에만 필요)
      */
     public MockPageContext(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
         this(servletContext, request, response, null);
     }
 
     /**
-     * Create new MockServletConfig.
+     * MockServletConfig 생성.
      *
-     * @param servletContext the ServletContext that the JSP page runs in
-     * @param request        the current HttpServletRequest
-     * @param response       the current HttpServletResponse
-     * @param servletConfig  the ServletConfig (hardly ever accessed from within a tag)
+     * @param servletContext JSP 페이지가 실행될 ServletContext
+     * @param request        현재 HttpServletRequest
+     * @param response       현재 HttpServletResponse
+     * @param servletConfig  ServletConfig (태그 안에서 접근할일이 거의 없음)
      */
     public MockPageContext(ServletContext servletContext, HttpServletRequest request,
                            HttpServletResponse response, ServletConfig servletConfig) {

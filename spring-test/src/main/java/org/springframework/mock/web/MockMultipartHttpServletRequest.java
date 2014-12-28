@@ -28,14 +28,12 @@ import javax.servlet.ServletContext;
 import java.util.*;
 
 /**
- * Mock implementation of the
  * {@link org.springframework.web.multipart.MultipartHttpServletRequest} 인터페이스의 mock 구현.
  *
- * <p>As of Spring 4.0, this set of mocks is designed on a Servlet 3.0 baseline.
+ * <p>Spring Framework 4.0에서, 이 클래스는 Servlet 3.0으로 디자인됨.
  *
- * <p>Useful for testing application controllers that access multipart uploads.
- * The {@link MockMultipartFile} can be used to populate these mock requests
- * with files.
+ * <p>멀티파트 업로드에 접근하는 어플리케이션 컨트롤러 테스트에 유용함.
+ * The {@link MockMultipartFile}이 이 mock request로 인해 쓰여질 수 있음.
  *
  * @author Juergen Hoeller
  * @author Eric Crampton
@@ -50,8 +48,7 @@ public class MockMultipartHttpServletRequest extends MockHttpServletRequest impl
 
 
 	/**
-	 * Create a new {@code MockMultipartHttpServletRequest} with a default
-	 * {@link MockServletContext}.
+	 * {@link MockServletContext}로 {@code MockMultipartHttpServletRequest}을 생성함.
 	 * @see #MockMultipartHttpServletRequest(ServletContext)
 	 */
 	public MockMultipartHttpServletRequest() {
@@ -59,9 +56,9 @@ public class MockMultipartHttpServletRequest extends MockHttpServletRequest impl
 	}
 
 	/**
-	 * Create a new {@code MockMultipartHttpServletRequest} with the supplied {@link ServletContext}.
-	 * @param servletContext the ServletContext that the request runs in
-	 * (may be {@code null} to use a default {@link MockServletContext})
+	 * 주어진 {@link ServletContext}로 {@code MockMultipartHttpServletRequest}을 생성함.
+	 * @param servletContext request가 실행 될 ServletContext
+	 * ({@code null}일때 기본 {@link MockServletContext}을 사용함).
 	 */
 	public MockMultipartHttpServletRequest(ServletContext servletContext) {
 		super(servletContext);
@@ -71,9 +68,9 @@ public class MockMultipartHttpServletRequest extends MockHttpServletRequest impl
 
 
 	/**
-	 * Add a file to this request. The parameter name from the multipart
-	 * form is taken from the {@link MultipartFile#getName()}.
-	 * @param file multipart file to be added
+	 * 이 request에 파일을 추가함.
+	 * 멀티파트 form의 파라미터 이름은 {@link MultipartFile#getName()}로 부터 획득됨.
+	 * @param file 추가할 멀티파트 파일
 	 */
 	public void addFile(MultipartFile file) {
 		Assert.notNull(file, "MultipartFile must not be null");

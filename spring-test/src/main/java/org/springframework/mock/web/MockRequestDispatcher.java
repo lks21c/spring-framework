@@ -16,21 +16,19 @@
 
 package org.springframework.mock.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Assert;
-
 /**
- * Mock implementation of the {@link javax.servlet.RequestDispatcher} interface.
- *
- * <p>Used for testing the web framework; typically not necessary for
- * testing application controllers.
+ * {@link javax.servlet.RequestDispatcher} 인터페이스의 mock 구현.
+ * <p>
+ * <p>web framework테스트에 사용함; 또한 어플리케이션 컨트롤러 테스트에 유용함.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -39,57 +37,57 @@ import org.springframework.util.Assert;
  */
 public class MockRequestDispatcher implements RequestDispatcher {
 
-	private final Log logger = LogFactory.getLog(getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
-	private final String resource;
-
-
-	/**
-	 * Create a new MockRequestDispatcher for the given resource.
-	 * @param resource the server resource to dispatch to, located at a
-	 * particular path or given by a particular name
-	 */
-	public MockRequestDispatcher(String resource) {
-		Assert.notNull(resource, "resource must not be null");
-		this.resource = resource;
-	}
+    private final String resource;
 
 
-	@Override
-	public void forward(ServletRequest request, ServletResponse response) {
-		Assert.notNull(request, "Request must not be null");
-		Assert.notNull(response, "Response must not be null");
-		if (response.isCommitted()) {
-			throw new IllegalStateException("Cannot perform forward - response is already committed");
-		}
-		getMockHttpServletResponse(response).setForwardedUrl(this.resource);
-		if (logger.isDebugEnabled()) {
-			logger.debug("MockRequestDispatcher: forwarding to [" + this.resource + "]");
-		}
-	}
+    /**
+     * 주어진 리소스로 MockRequestDispatcher 생성.
+     *
+     * @param resource 디스패치할 서버 리소스, 특정 이름 또는 path
+     */
+    public MockRequestDispatcher(String resource) {
+        Assert.notNull(resource, "resource must not be null");
+        this.resource = resource;
+    }
 
-	@Override
-	public void include(ServletRequest request, ServletResponse response) {
-		Assert.notNull(request, "Request must not be null");
-		Assert.notNull(response, "Response must not be null");
-		getMockHttpServletResponse(response).addIncludedUrl(this.resource);
-		if (logger.isDebugEnabled()) {
-			logger.debug("MockRequestDispatcher: including [" + this.resource + "]");
-		}
-	}
 
-	/**
-	 * Obtain the underlying {@link MockHttpServletResponse}, unwrapping
-	 * {@link HttpServletResponseWrapper} decorators if necessary.
-	 */
-	protected MockHttpServletResponse getMockHttpServletResponse(ServletResponse response) {
-		if (response instanceof MockHttpServletResponse) {
-			return (MockHttpServletResponse) response;
-		}
-		if (response instanceof HttpServletResponseWrapper) {
-			return getMockHttpServletResponse(((HttpServletResponseWrapper) response).getResponse());
-		}
-		throw new IllegalArgumentException("MockRequestDispatcher requires MockHttpServletResponse");
-	}
+    @Override
+    public void forward(ServletRequest request, ServletResponse response) {
+        Assert.notNull(request, "Request must not be null");
+        Assert.notNull(response, "Response must not be null");
+        if (response.isCommitted()) {
+            throw new IllegalStateException("Cannot perform forward - response is already committed");
+        }
+        getMockHttpServletResponse(response).setForwardedUrl(this.resource);
+        if (logger.isDebugEnabled()) {
+            logger.debug("MockRequestDispatcher: forwarding to [" + this.resource + "]");
+        }
+    }
+
+    @Override
+    public void include(ServletRequest request, ServletResponse response) {
+        Assert.notNull(request, "Request must not be null");
+        Assert.notNull(response, "Response must not be null");
+        getMockHttpServletResponse(response).addIncludedUrl(this.resource);
+        if (logger.isDebugEnabled()) {
+            logger.debug("MockRequestDispatcher: including [" + this.resource + "]");
+        }
+    }
+
+    /**
+     * {@link MockHttpServletResponse}를 획득함,
+     * 필요시 {@link HttpServletResponseWrapper} 데코레이터를 unwrapping함.
+     */
+    protected MockHttpServletResponse getMockHttpServletResponse(ServletResponse response) {
+        if (response instanceof MockHttpServletResponse) {
+            return (MockHttpServletResponse) response;
+        }
+        if (response instanceof HttpServletResponseWrapper) {
+            return getMockHttpServletResponse(((HttpServletResponseWrapper) response).getResponse());
+        }
+        throw new IllegalArgumentException("MockRequestDispatcher requires MockHttpServletResponse");
+    }
 
 }

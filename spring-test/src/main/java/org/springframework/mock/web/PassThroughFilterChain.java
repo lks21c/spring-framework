@@ -16,21 +16,14 @@
 
 package org.springframework.mock.web;
 
-import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.springframework.util.Assert;
 
+import javax.servlet.*;
+import java.io.IOException;
+
 /**
- * Implementation of the {@link javax.servlet.FilterConfig} interface which
- * simply passes the call through to a given Filter/FilterChain combination
- * (indicating the next Filter in the chain along with the FilterChain that it is
- * supposed to work on) or to a given Servlet (indicating the end of the chain).
+ * {@link javax.servlet.FilterConfig}의 구현.
+ * 단순히 Filter/FilterChain 또는 Servlet으로 전달.
  *
  * @author Juergen Hoeller
  * @since 2.0.3
@@ -48,10 +41,11 @@ public class PassThroughFilterChain implements FilterChain {
 
 
 	/**
-	 * Create a new PassThroughFilterChain that delegates to the given Filter,
-	 * calling it with the given FilterChain.
-	 * @param filter the Filter to delegate to
-	 * @param nextFilterChain the FilterChain to use for that next Filter
+	 * PassThroughFilterChain를 생성.
+	 * 주어진 필터와 다음 필터 체인을 지정.
+	 *
+	 * @param filter 전달할 필터
+	 * @param nextFilterChain 다음 필터를 위한 필터체인
 	 */
 	public PassThroughFilterChain(Filter filter, FilterChain nextFilterChain) {
 		Assert.notNull(filter, "Filter must not be null");
@@ -61,8 +55,9 @@ public class PassThroughFilterChain implements FilterChain {
 	}
 
 	/**
-	 * Create a new PassThroughFilterChain that delegates to the given Servlet.
-	 * @param servlet the Servlet to delegate to
+	 * PassThroughFilterChain를 생성.
+	 * 주어진 Servlet으로 전달.
+	 * @param servlet 전달할 Servlet
 	 */
 	public PassThroughFilterChain(Servlet servlet) {
 		Assert.notNull(servlet, "Servlet must not be null");
@@ -71,7 +66,7 @@ public class PassThroughFilterChain implements FilterChain {
 
 
 	/**
-	 * Pass the call on to the Filter/Servlet.
+	 * 호출을 필터/Servlet으로 전달
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response) throws ServletException, IOException {

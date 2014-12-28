@@ -16,20 +16,19 @@
 
 package org.springframework.mock.web;
 
+import org.springframework.util.Assert;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-
-import org.springframework.util.Assert;
 
 /**
- * Mock implementation of the {@link javax.servlet.ServletConfig} interface.
+ * {@link javax.servlet.ServletConfig} 인터페이스의 mock 구현.
  *
- * <p>Used for testing the web framework; typically not necessary for
- * testing application controllers.
+ * <p>web framework테스트에 사용함; 또한 어플리케이션 컨트롤러 테스트에 유용함.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -45,32 +44,32 @@ public class MockServletConfig implements ServletConfig {
 
 
 	/**
-	 * Create a new MockServletConfig with a default {@link MockServletContext}.
+	 * 기본 {@link MockServletContext}로 MockServletConfig 생성.
 	 */
 	public MockServletConfig() {
 		this(null, "");
 	}
 
 	/**
-	 * Create a new MockServletConfig with a default {@link MockServletContext}.
-	 * @param servletName the name of the servlet
+	 * 기본 {@link MockServletContext}로 MockServletConfig 생성.
+	 * @param servletName servlet 이름
 	 */
 	public MockServletConfig(String servletName) {
 		this(null, servletName);
 	}
 
 	/**
-	 * Create a new MockServletConfig.
-	 * @param servletContext the ServletContext that the servlet runs in
+	 * Create a new MockServletConfig 생성.
+	 * @param servletContext servlet이 실행될 ServletContext
 	 */
 	public MockServletConfig(ServletContext servletContext) {
 		this(servletContext, "");
 	}
 
 	/**
-	 * Create a new MockServletConfig.
-	 * @param servletContext the ServletContext that the servlet runs in
-	 * @param servletName the name of the servlet
+	 * Create a new MockServletConfig 생성.
+	 * @param servletContext servlet이 실행될 ServletContext
+	 * @param servletName servlet 이름
 	 */
 	public MockServletConfig(ServletContext servletContext, String servletName) {
 		this.servletContext = (servletContext != null ? servletContext : new MockServletContext());
