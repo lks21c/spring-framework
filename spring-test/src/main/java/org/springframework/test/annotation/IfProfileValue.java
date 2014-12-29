@@ -16,93 +16,88 @@
 
 package org.springframework.test.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>
- * Test annotation to indicate that a test is enabled for a specific testing
- * profile or environment. If the configured {@link ProfileValueSource} returns
- * a matching {@link #value} for the provided {@link #name}, the test will be
- * enabled.
+ * 테스트 어노테이션 으로 특정 테스트 profile이나 environment를 가리킨다.
+ * 만약 설정된 {@link ProfileValueSource}가 제공된 이름으로 매치되는 {@link #value}를 리턴하면,
+ * 테스트는 활성화됨.
  * </p>
  * <p>
- * Note: {@code @IfProfileValue} can be applied at the class level, the method
- * level, or both. {@code @IfProfileValue} at the class level overrides
- * method-level usage of {@code @IfProfileValue} for any methods within that
- * class.
- * </p>
+ * <p>
+ * 노트: {@code @IfProfileValue}는 class level이나 method level 혹은 둘다 적용될수 있음.
+ * {@code @IfProfileValue}이 class level에 적용되면, 어떤 메소드던 {@code @IfProfileValue}가 되어 있더라도
+ * class level에 override함.
  *
- * <h3>Examples</h3>
+ * </p>
  * <p>
- * When using {@link SystemProfileValueSource} as the {@link ProfileValueSource}
- * implementation, you can configure a test method to run only on Java VMs from
- * Sun Microsystems as follows:
+ * <h3>예제</h3>
+ *
+ * <p>
+ * {@link SystemProfileValueSource}를 {@link ProfileValueSource}으로 사용할 때,
+ * 아래의 방법으로 Sun Microsystems의 JVM에서만 테스트가 실행되게 할수 있음:
  * </p>
  * <pre class="code">
  * &#064;IfProfileValue(name = &quot;java.vendor&quot;, value = &quot;Sun Microsystems Inc.&quot;)
  * public void testSomething() {
- * 	// ...
+ * // ...
  * }
  * </pre>
  * <p>
- * You can alternatively configure {@code @IfProfileValue} with <em>OR</em>
- * semantics for multiple {@link #values() values} as follows (assuming a
- * {@link ProfileValueSource} has been appropriately configured for the
- * &quot;test-groups&quot; name):
- * </p>
  *
+ * </p>
+ * {@code @IfProfileValue}을 아래와 같이 복수의 {@link #values() values}값으로 지정하면 <em>OR</em>의 의미임. <br />
+ * ({@link ProfileValueSource}가 적절하게 &quot;test-groups&quot;가 name으로 설정되었다고 가정):
+ * </p>
+ * <p>
  * <pre class="code">
  * &#064;IfProfileValue(name = &quot;test-groups&quot;, values = { &quot;unit-tests&quot;, &quot;integration-tests&quot; })
  * public void testWhichRunsForUnitOrIntegrationTestGroups() {
- * 	// ...
+ * // ...
  * }
  * </pre>
- *
- * <p>As of Spring Framework 4.0, this annotation may be used as a
- * <em>meta-annotation</em> to create custom <em>composed annotations</em>.
+ * <p>
+ * <p>
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용됨.
+ * </p>
  *
  * @author Rod Johnson
  * @author Sam Brannen
- * @since 2.0
  * @see ProfileValueSource
  * @see ProfileValueSourceConfiguration
  * @see ProfileValueUtils
  * @see org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests
  * @see org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+ * @since 2.0
  */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface IfProfileValue {
 
-	/**
-	 * The {@code name} of the <em>profile value</em> against which to
-	 * test.
-	 */
-	String name();
+    /**
+     * 설정되었는지 확인할 {@code name}
+     */
+    String name();
 
-	/**
-	 * A single, permissible {@code value} of the <em>profile value</em>
-	 * for the given {@link #name() name}.
-	 * <p>
-	 * Note: Assigning values to both {@link #value()} and {@link #values()}
-	 * will lead to a configuration conflict.
-	 */
-	String value() default "";
+    /**
+     * 주어진 {@link #name() name}의 단일의 허용되는 <em>profile value</em>의 {@code value}.
+     * <p>
+     * 노트: {@link #value()} and {@link #values()} 양쪽에 값을 설정하면 conflict가 발생함.
+     * </p>
+     */
+    String value() default "";
 
-	/**
-	 * A list of all permissible {@code values} of the
-	 * <em>profile value</em> for the given {@link #name() name}.
-	 * <p>
-	 * Note: Assigning values to both {@link #value()} and {@link #values()}
-	 * will lead to a configuration conflict.
-	 */
-	String[] values() default {};
+    /**
+     * 주어진 {@link #name() name}의 리스트의 모든 허용되는 <em>profile value</em>의 {@code value}.
+     * A list of all permissible {@code values} of the
+     * <p>
+     * 노트: {@link #value()} and {@link #values()} 양쪽에 값을 설정하면 conflict가 발생함.
+     * </p>
+     */
+    String[] values() default {};
 
 }
