@@ -34,8 +34,8 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@code JdbcTestUtils} is a collection of JDBC related utility functions
- * intended to simplify standard database testing scenarios.
+ * {@code JdbcTestUtils}은 JDBC 관련 유틸리티 함수들의 집합임.
+ * 표준 db 테스팅 시나리오를 단순화 하는것을 목표로함.
  *
  * @author Thomas Risberg
  * @author Sam Brannen
@@ -54,28 +54,28 @@ public class JdbcTestUtils {
 
 
 	/**
-	 * Count the rows in the given table.
-	 * @param jdbcTemplate the JdbcTemplate with which to perform JDBC operations
-	 * @param tableName name of the table to count rows in
-	 * @return the number of rows in the table
+	 * 주어진 테이블의 row count 반환.
+	 * @param jdbcTemplate JDBC operation을 수행할 JdbcTemplate
+	 * @param tableName 테이블 이름
+	 * @return row count
 	 */
 	public static int countRowsInTable(JdbcTemplate jdbcTemplate, String tableName) {
 		return jdbcTemplate.queryForObject("SELECT COUNT(0) FROM " + tableName, Integer.class);
 	}
 
 	/**
-	 * Count the rows in the given table, using the provided {@code WHERE} clause.
-	 * <p>If the provided {@code WHERE} clause contains text, it will be prefixed
-	 * with {@code " WHERE "} and then appended to the generated {@code SELECT}
-	 * statement. For example, if the provided table name is {@code "person"} and
-	 * the provided where clause is {@code "name = 'Bob' and age > 25"}, the
-	 * resulting SQL statement to execute will be
+	 * 주어진 테이블의 {@code WHERE}조건의 row count 반환.
+	 *
+	 * <p> 만약 {@code WHERE}가 텍스트를 포함하면, {@code " WHERE "}를 앞에다 덧붙이고
+	 * {@code SELECT} statement 뒤에 붙임.
+	 * 예를 들어, 테이블 이름이 {@code "person"}이고 where 조건이 {@code "name = 'Bob' and age > 25"} 이면,
+	 * 결과적인 SQL statement는 아래와 같음.
 	 * {@code "SELECT COUNT(0) FROM person WHERE name = 'Bob' and age > 25"}.
-	 * @param jdbcTemplate the JdbcTemplate with which to perform JDBC operations
-	 * @param tableName the name of the table to count rows in
-	 * @param whereClause the {@code WHERE} clause to append to the query
-	 * @return the number of rows in the table that match the provided
-	 * {@code WHERE} clause
+     *
+	 * @param jdbcTemplate JDBC operation을 수행할 JdbcTemplate
+	 * @param tableName 테이블 이름
+	 * @param whereClause {@code WHERE}절
+	 * @return row count
 	 */
 	public static int countRowsInTableWhere(JdbcTemplate jdbcTemplate, String tableName, String whereClause) {
 		String sql = "SELECT COUNT(0) FROM " + tableName;
@@ -86,10 +86,10 @@ public class JdbcTestUtils {
 	}
 
 	/**
-	 * Delete all rows from the specified tables.
-	 * @param jdbcTemplate the JdbcTemplate with which to perform JDBC operations
-	 * @param tableNames the names of the tables to delete from
-	 * @return the total number of rows deleted from all specified tables
+	 * 명시된 테이블들 모든 row를 지움.
+	 * @param jdbcTemplate JDBC operation을 수행할 JdbcTemplate
+	 * @param tableName 테이블 이름
+	 * @return  삭제된 총 row count
 	 */
 	public static int deleteFromTables(JdbcTemplate jdbcTemplate, String... tableNames) {
 		int totalRowCount = 0;
@@ -104,23 +104,22 @@ public class JdbcTestUtils {
 	}
 
 	/**
-	 * Delete rows from the given table, using the provided {@code WHERE} clause.
-	 * <p>If the provided {@code WHERE} clause contains text, it will be prefixed
-	 * with {@code " WHERE "} and then appended to the generated {@code DELETE}
-	 * statement. For example, if the provided table name is {@code "person"} and
-	 * the provided where clause is {@code "name = 'Bob' and age > 25"}, the
-	 * resulting SQL statement to execute will be
+	 * 명시된 {@code WHERE}조건의 테이블의 모든 row를 지움.
+	 *
+	 * <p> 만약 {@code WHERE}가 텍스트를 포함하면, {@code " WHERE "}를 앞에다 덧붙이고
+	 * {@code SELECT} statement 뒤에 붙임.
+	 * 예를 들어, 테이블 이름이 {@code "person"}이고 where 조건이 {@code "name = 'Bob' and age > 25"} 이면,
+	 * 결과적인 SQL statement는 아래와 같음.
 	 * {@code "DELETE FROM person WHERE name = 'Bob' and age > 25"}.
-	 * <p>As an alternative to hard-coded values, the {@code "?"} placeholder can
-	 * be used within the {@code WHERE} clause, binding to the given arguments.
-	 * @param jdbcTemplate the JdbcTemplate with which to perform JDBC operations
-	 * @param tableName the name of the table to delete rows from
-	 * @param whereClause the {@code WHERE} clause to append to the query
-	 * @param args arguments to bind to the query (leaving it to the PreparedStatement
-	 * to guess the corresponding SQL type); may also contain {@link SqlParameterValue}
-	 * objects which indicate not only the argument value but also the SQL type and
-	 * optionally the scale.
-	 * @return the number of rows deleted from the table
+	 *
+	 * <p> {@code WHERE}절의 인자값들을 하드코딩하는것 대신에, {@code "?"}로 대체하여 인자를 따로 지정해주는것이 가능.
+	 *
+	 * @param jdbcTemplate JDBC operation을 수행할 JdbcTemplate
+	 * @param tableName 테이블 이름
+	 * @param whereClause {@code WHERE}절
+	 * @param args where 조건에서 입력한 ?에 매핑되는 인자들 (PreparedStatement로 남겨두어 상응하는 SQL type을 추측케함);
+	 * {@link SqlParameterValue} object를 포함하여 인자값 뿐만 아니라 SQL type과 scale(option)을 명시할 가능성이 있음.
+	 * @return  삭제된 총 row count
 	 */
 	public static int deleteFromTableWhere(JdbcTemplate jdbcTemplate, String tableName, String whereClause,
 			Object... args) {
@@ -136,9 +135,9 @@ public class JdbcTestUtils {
 	}
 
 	/**
-	 * Drop the specified tables.
-	 * @param jdbcTemplate the JdbcTemplate with which to perform JDBC operations
-	 * @param tableNames the names of the tables to drop
+	 * 명시된 테이블 drop.
+	 * @param jdbcTemplate JDBC operation을 수행할 JdbcTemplate
+	 * @param tableName 테이블 이름
 	 */
 	public static void dropTables(JdbcTemplate jdbcTemplate, String... tableNames) {
 		for (String tableName : tableNames) {
