@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
 import static org.springframework.core.annotation.AnnotationUtils.*;
 
 /**
- * General utility methods for working with <em>profile values</em>.
+ * <em>profile values</em>를 위한 일반적인 유틸리티 메서드들.
  *
  * @author Sam Brannen
  * @author Juergen Hoeller
@@ -41,7 +41,6 @@ import static org.springframework.core.annotation.AnnotationUtils.*;
 public abstract class ProfileValueUtils {
 
 	private static final Log logger = LogFactory.getLog(ProfileValueUtils.class);
-
 
 	/**
 	 * Retrieves the {@link ProfileValueSource} type for the specified
