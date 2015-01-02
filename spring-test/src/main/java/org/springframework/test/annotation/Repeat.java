@@ -24,14 +24,14 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Test annotation to indicate that a test method should be invoked repeatedly.
+ * 테스트 메서드가 반드시 반복적으로 호출되어야 한다는 것을 명시하는 테스트 어노테이션.
  *
- * <p>Note that the scope of execution to be repeated includes execution of the
- * test method itself as well as any <em>set up</em> or <em>tear down</em> of
- * the test fixture.
+ * <p>
+ * 노트: 테스트 메서드의 반복 실행 scope에는 테스트 메서드 자신 뿐만 아니라 test fixure의
+ * set up 이나 tear down까지 포함함.
  *
- * <p>As of Spring Framework 4.0, this annotation may be used as a
- * <em>meta-annotation</em> to create custom <em>composed annotations</em>.
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Rod Johnson
  * @author Sam Brannen

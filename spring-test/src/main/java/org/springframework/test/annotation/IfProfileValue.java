@@ -60,7 +60,7 @@ import java.lang.annotation.*;
  * <p>
  * <p>
  * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
- * <em>meta-annotation</em>로 사용됨.
+ * <em>meta-annotation</em>로 사용될 수 있음.
  * </p>
  *
  * @author Rod Johnson

@@ -24,13 +24,11 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
- * Test annotation used to indicate whether or not the transaction for the
- * annotated test method should be <em>rolled back</em> after the test method
- * has completed. If {@code true}, the transaction will be rolled back;
- * otherwise, the transaction will be committed.
+ * 테스트 메서드가 완료된 후 트랜젝션이 <em>rolled back</em>되어야 하는지 명시하는 어노테이션.
+ * 만약 {@code true}값이면, 트랜젝션이 롤백;반대의 경우, 트랜젝션이 커밋됨.
  *
- * <p>As of Spring Framework 4.0, this annotation may be used as a
- * <em>meta-annotation</em> to create custom <em>composed annotations</em>.
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Sam Brannen
  * @since 2.5
@@ -41,8 +39,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 public @interface Rollback {
 
 	/**
-	 * Whether or not the transaction for the annotated method should be rolled
-	 * back after the method has completed.
+     * 어노테이션이 적용된 메서드가 실행 완료 후 트랜젝션이 롤백될지 여부.
 	 */
 	boolean value() default true;
 

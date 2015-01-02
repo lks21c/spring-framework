@@ -20,37 +20,38 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Test-specific annotation to indicate that a test method has to finish
- * execution in a {@link #millis() specified time period}.
- *
- * <p>If the text execution takes longer than the specified time period, then
- * the test is to be considered failed.
- *
- * <p>Note that the time period includes execution of the test method itself,
- * any {@link Repeat repetitions} of the test, and any <em>set up</em> or
- * <em>tear down</em> of the test fixture.
- *
- * <p>As of Spring Framework 4.0, this annotation may be used as a
- * <em>meta-annotation</em> to create custom <em>composed annotations</em>.
+ * 테스트 실행이 {@link #millis() specified time period} 안에 끝나야 한다는 것을 명시하는
+ * 테스트 전용 어노테이션.
+ * <p/>
+ * <p>
+ * 만약 테스트 실행이 명시된 시간보다 길어지면, 테스트는 failed로 간주됨.
+ * <p/>
+ * <p>
+ * 노트: 테스트 시간은 테스트 메서드 자신 뿐만 아니라, {@link Repeat repetitions}이나
+ * <em>set up</em> 이나 <em>tear down</em>도 포함함.
+ * </p>
+ * <p/>
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Rod Johnson
  * @author Sam Brannen
- * @since 2.0
  * @see Repeat
+ * @since 2.0
  */
 @Documented
 @Retention(RUNTIME)
-@Target({ METHOD, ANNOTATION_TYPE })
+@Target({METHOD, ANNOTATION_TYPE})
 public @interface Timed {
 
-	/**
-	 * The maximum amount of time (in milliseconds) that a test execution can
-	 * take without being marked as failed due to taking too long.
-	 */
-	long millis();
+    /**
+     * 테스트 실행이 너무 오래 걸려 실패로 기록 되기까지 실행 될 최대 시간(밀리세컨드).
+     */
+    long millis();
 
 }

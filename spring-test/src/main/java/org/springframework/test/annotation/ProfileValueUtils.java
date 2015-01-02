@@ -16,196 +16,180 @@
 
 package org.springframework.test.annotation;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import static org.springframework.core.annotation.AnnotationUtils.*;
+import java.lang.reflect.Method;
+
+import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
 /**
  * <em>profile values</em>를 위한 일반적인 유틸리티 메서드들.
  *
  * @author Sam Brannen
  * @author Juergen Hoeller
- * @since 2.5
  * @see ProfileValueSource
  * @see ProfileValueSourceConfiguration
  * @see IfProfileValue
+ * @since 2.5
  */
 public abstract class ProfileValueUtils {
 
-	private static final Log logger = LogFactory.getLog(ProfileValueUtils.class);
+    private static final Log logger = LogFactory.getLog(ProfileValueUtils.class);
 
-	/**
-	 * Retrieves the {@link ProfileValueSource} type for the specified
-	 * {@link Class test class} as configured via the
-	 * {@link ProfileValueSourceConfiguration
-	 * &#064;ProfileValueSourceConfiguration} annotation and instantiates a new
-	 * instance of that type.
-	 * <p>
-	 * If {@link ProfileValueSourceConfiguration
-	 * &#064;ProfileValueSourceConfiguration} is not present on the specified
-	 * class or if a custom {@link ProfileValueSource} is not declared, the
-	 * default {@link SystemProfileValueSource} will be returned instead.
-	 *
-	 * @param testClass The test class for which the ProfileValueSource should
-	 * be retrieved
-	 * @return the configured (or default) ProfileValueSource for the specified
-	 * class
-	 * @see SystemProfileValueSource
-	 */
-	@SuppressWarnings("unchecked")
-	public static ProfileValueSource retrieveProfileValueSource(Class<?> testClass) {
-		Assert.notNull(testClass, "testClass must not be null");
+    /**
+     * 명시된 {@link Class test class}에서
+     * {@link ProfileValueSourceConfiguration
+     * &#064;ProfileValueSourceConfiguration} 어노테이션을 통해서
+     * {@link ProfileValueSource}을 얻고 새 인스턴스를 생성함.
+     * <p/>
+     * <p/>
+     * 만약 {@link ProfileValueSourceConfiguration
+     * &#064;ProfileValueSourceConfiguration}이 명시된 클래스에 존재하지 않거나 커스텀 {@link ProfileValueSource}가
+     * 정의되지 않으면 기본 {@link SystemProfileValueSource}이 대신에 리턴됨.
+     *
+     * @param testClass ProfileValueSource가 얻어질 테스트 클래스
+     * @return 설정된(또는 기본의) ProfileValueSource 클래스
+     * @see SystemProfileValueSource
+     */
+    @SuppressWarnings("unchecked")
+    public static ProfileValueSource retrieveProfileValueSource(Class<?> testClass) {
+        Assert.notNull(testClass, "testClass must not be null");
 
-		Class<ProfileValueSourceConfiguration> annotationType = ProfileValueSourceConfiguration.class;
-		ProfileValueSourceConfiguration config = findAnnotation(testClass, annotationType);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Retrieved @ProfileValueSourceConfiguration [" + config + "] for test class ["
-					+ testClass.getName() + "]");
-		}
+        Class<ProfileValueSourceConfiguration> annotationType = ProfileValueSourceConfiguration.class;
+        ProfileValueSourceConfiguration config = findAnnotation(testClass, annotationType);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Retrieved @ProfileValueSourceConfiguration [" + config + "] for test class ["
+                    + testClass.getName() + "]");
+        }
 
-		Class<? extends ProfileValueSource> profileValueSourceType;
-		if (config != null) {
-			profileValueSourceType = config.value();
-		}
-		else {
-			profileValueSourceType = (Class<? extends ProfileValueSource>) AnnotationUtils.getDefaultValue(annotationType);
-		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("Retrieved ProfileValueSource type [" + profileValueSourceType + "] for class ["
-					+ testClass.getName() + "]");
-		}
+        Class<? extends ProfileValueSource> profileValueSourceType;
+        if (config != null) {
+            profileValueSourceType = config.value();
+        } else {
+            profileValueSourceType = (Class<? extends ProfileValueSource>) AnnotationUtils.getDefaultValue(annotationType);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Retrieved ProfileValueSource type [" + profileValueSourceType + "] for class ["
+                    + testClass.getName() + "]");
+        }
 
-		ProfileValueSource profileValueSource;
-		if (SystemProfileValueSource.class.equals(profileValueSourceType)) {
-			profileValueSource = SystemProfileValueSource.getInstance();
-		}
-		else {
-			try {
-				profileValueSource = profileValueSourceType.newInstance();
-			}
-			catch (Exception e) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Could not instantiate a ProfileValueSource of type [" + profileValueSourceType
-							+ "] for class [" + testClass.getName() + "]: using default.", e);
-				}
-				profileValueSource = SystemProfileValueSource.getInstance();
-			}
-		}
+        ProfileValueSource profileValueSource;
+        if (SystemProfileValueSource.class.equals(profileValueSourceType)) {
+            profileValueSource = SystemProfileValueSource.getInstance();
+        } else {
+            try {
+                profileValueSource = profileValueSourceType.newInstance();
+            } catch (Exception e) {
+                if (logger.isWarnEnabled()) {
+                    logger.warn("Could not instantiate a ProfileValueSource of type [" + profileValueSourceType
+                            + "] for class [" + testClass.getName() + "]: using default.", e);
+                }
+                profileValueSource = SystemProfileValueSource.getInstance();
+            }
+        }
 
-		return profileValueSource;
-	}
+        return profileValueSource;
+    }
 
-	/**
-	 * Determine if the supplied {@code testClass} is <em>enabled</em> in
-	 * the current environment, as specified by the {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation at the class level.
-	 * <p>
-	 * Defaults to {@code true} if no {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation is declared.
-	 *
-	 * @param testClass the test class
-	 * @return {@code true} if the test is <em>enabled</em> in the current
-	 * environment
-	 */
-	public static boolean isTestEnabledInThisEnvironment(Class<?> testClass) {
-		IfProfileValue ifProfileValue = findAnnotation(testClass, IfProfileValue.class);
-		return isTestEnabledInThisEnvironment(retrieveProfileValueSource(testClass), ifProfileValue);
-	}
+    /**
+     * Determine if the supplied {@code testClass} is <em>enabled</em> in
+     * the current environment, as specified by the {@link IfProfileValue
+     * &#064;IfProfileValue} annotation at the class level.
+     * <p/>
+     * Defaults to {@code true} if no {@link IfProfileValue
+     * &#064;IfProfileValue} annotation is declared.
+     *
+     * @param testClass the test class
+     * @return {@code true} if the test is <em>enabled</em> in the current
+     * environment
+     */
+    public static boolean isTestEnabledInThisEnvironment(Class<?> testClass) {
+        IfProfileValue ifProfileValue = findAnnotation(testClass, IfProfileValue.class);
+        return isTestEnabledInThisEnvironment(retrieveProfileValueSource(testClass), ifProfileValue);
+    }
 
-	/**
-	 * Determine if the supplied {@code testMethod} is <em>enabled</em> in
-	 * the current environment, as specified by the {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation, which may be declared on the test
-	 * method itself or at the class level. Class-level usage overrides
-	 * method-level usage.
-	 * <p>
-	 * Defaults to {@code true} if no {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation is declared.
-	 *
-	 * @param testMethod the test method
-	 * @param testClass the test class
-	 * @return {@code true} if the test is <em>enabled</em> in the current
-	 * environment
-	 */
-	public static boolean isTestEnabledInThisEnvironment(Method testMethod, Class<?> testClass) {
-		return isTestEnabledInThisEnvironment(retrieveProfileValueSource(testClass), testMethod, testClass);
-	}
+    /**
+     * {@code testMethod}가 현재의 환경에 enable되어있는지 확인.
+     * 테스트 메서드나 클래스에 정의된 {@link IfProfileValue
+     * &#064;IfProfileValue}을 확인함. 클래스 레벨 사용은 메서드 레벨 사용을 overridde 함.
+     * <p/>
+     * <p/>
+     * 정의된 {@link IfProfileValue
+     * &#064;IfProfileValue} 어노테이션이 없으면 {@code true}를 리턴.
+     *
+     * @param testMethod 테스트 메소드
+     * @param testClass  테스트 클래스
+     * @return 만약 현재의 환경에서 test가 enable되어 있으면 {@code true}
+     */
+    public static boolean isTestEnabledInThisEnvironment(Method testMethod, Class<?> testClass) {
+        return isTestEnabledInThisEnvironment(retrieveProfileValueSource(testClass), testMethod, testClass);
+    }
 
-	/**
-	 * Determine if the supplied {@code testMethod} is <em>enabled</em> in
-	 * the current environment, as specified by the {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation, which may be declared on the test
-	 * method itself or at the class level. Class-level usage overrides
-	 * method-level usage.
-	 * <p>
-	 * Defaults to {@code true} if no {@link IfProfileValue
-	 * &#064;IfProfileValue} annotation is declared.
-	 *
-	 * @param profileValueSource the ProfileValueSource to use to determine if
-	 * the test is enabled
-	 * @param testMethod the test method
-	 * @param testClass the test class
-	 * @return {@code true} if the test is <em>enabled</em> in the current
-	 * environment
-	 */
-	public static boolean isTestEnabledInThisEnvironment(ProfileValueSource profileValueSource, Method testMethod,
-			Class<?> testClass) {
+    /**
+     * {@code testMethod}가 현재의 환경에 enable되어있는지 확인.
+     * 테스트 메서드나 클래스에 정의된 {@link IfProfileValue
+     * &#064;IfProfileValue}을 확인함. 클래스 레벨 사용은 메서드 레벨 사용을 overridde 함.
+     * <p/>
+     * <p/>
+     * 정의된 {@link IfProfileValue
+     * &#064;IfProfileValue} 어노테이션이 없으면 {@code true}를 리턴.
+     *
+     * @param profileValueSource 테스트가 enable 되어 있는지 확인할 ProfileValueSource
+     * @param testMethod         테스트 메소드
+     * @param testClass          테스트 클래스
+     * @return 만약 현재의 환경에서 test가 enable되어 있으면 {@code true}
+     */
+    public static boolean isTestEnabledInThisEnvironment(ProfileValueSource profileValueSource, Method testMethod,
+                                                         Class<?> testClass) {
 
-		IfProfileValue ifProfileValue = findAnnotation(testClass, IfProfileValue.class);
-		boolean classLevelEnabled = isTestEnabledInThisEnvironment(profileValueSource, ifProfileValue);
+        IfProfileValue ifProfileValue = findAnnotation(testClass, IfProfileValue.class);
+        boolean classLevelEnabled = isTestEnabledInThisEnvironment(profileValueSource, ifProfileValue);
 
-		if (classLevelEnabled) {
-			ifProfileValue = findAnnotation(testMethod, IfProfileValue.class);
-			return isTestEnabledInThisEnvironment(profileValueSource, ifProfileValue);
-		}
+        if (classLevelEnabled) {
+            ifProfileValue = findAnnotation(testMethod, IfProfileValue.class);
+            return isTestEnabledInThisEnvironment(profileValueSource, ifProfileValue);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Determine if the {@code value} (or one of the {@code values})
-	 * in the supplied {@link IfProfileValue &#064;IfProfileValue} annotation is
-	 * <em>enabled</em> in the current environment.
-	 *
-	 * @param profileValueSource the ProfileValueSource to use to determine if
-	 * the test is enabled
-	 * @param ifProfileValue the annotation to introspect; may be
-	 * {@code null}
-	 * @return {@code true} if the test is <em>enabled</em> in the current
-	 * environment or if the supplied {@code ifProfileValue} is
-	 * {@code null}
-	 */
-	private static boolean isTestEnabledInThisEnvironment(ProfileValueSource profileValueSource,
-			IfProfileValue ifProfileValue) {
+    /**
+     * {@link IfProfileValue &#064;IfProfileValue}으로 얻어진 {@code value}(또는 {@code value} 중 하나)가
+     * Determine if the {@code value} (or one of the {@code values})이 현재의 환경에 enable 되어 있는지
+     * 여부를 리턴.
+     *
+     * @param profileValueSource 테스트가 enable 되어 있는지 확인할 ProfileValueSource
+     * @param ifProfileValue     조사할 어노테이션;{@code null} 일수 있음
+     * @return 만약 현재의 환경에서 test가 enable되어 있거나 {@code ifProfileValue}가 {@code null}이면 {@code true}
+     */
+    private static boolean isTestEnabledInThisEnvironment(ProfileValueSource profileValueSource,
+                                                          IfProfileValue ifProfileValue) {
 
-		if (ifProfileValue == null) {
-			return true;
-		}
+        if (ifProfileValue == null) {
+            return true;
+        }
 
-		String environmentValue = profileValueSource.get(ifProfileValue.name());
-		String[] annotatedValues = ifProfileValue.values();
-		if (StringUtils.hasLength(ifProfileValue.value())) {
-			if (annotatedValues.length > 0) {
-				throw new IllegalArgumentException("Setting both the 'value' and 'values' attributes "
-						+ "of @IfProfileValue is not allowed: choose one or the other.");
-			}
-			annotatedValues = new String[] { ifProfileValue.value() };
-		}
+        String environmentValue = profileValueSource.get(ifProfileValue.name());
+        String[] annotatedValues = ifProfileValue.values();
+        if (StringUtils.hasLength(ifProfileValue.value())) {
+            if (annotatedValues.length > 0) {
+                throw new IllegalArgumentException("Setting both the 'value' and 'values' attributes "
+                        + "of @IfProfileValue is not allowed: choose one or the other.");
+            }
+            annotatedValues = new String[]{ifProfileValue.value()};
+        }
 
-		for (String value : annotatedValues) {
-			if (ObjectUtils.nullSafeEquals(value, environmentValue)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        for (String value : annotatedValues) {
+            if (ObjectUtils.nullSafeEquals(value, environmentValue)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
