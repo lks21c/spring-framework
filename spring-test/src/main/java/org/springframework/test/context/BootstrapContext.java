@@ -17,8 +17,7 @@
 package org.springframework.test.context;
 
 /**
- * {@code BootstrapContext} encapsulates the context in which the <em>Spring
- * TestContext Framework</em> is bootstrapped.
+ * {@code BootstrapContext}는 <em>Spring TestContext Framework</em>이  로딩될 context를 encapsulation함.
  *
  * @author Sam Brannen
  * @since 4.1
@@ -28,14 +27,13 @@ package org.springframework.test.context;
 public interface BootstrapContext {
 
 	/**
-	 * Get the {@link Class test class} for this bootstrap context.
-	 * @return the test class (never {@code null})
+	 * 이 부트 스트랩 컨텍스트를 위한 {@link Class test class}를 얻음.
+	 * @return 테스트 클래스(절대 {@code null}이면 안됨)
 	 */
 	Class<?> getTestClass();
 
 	/**
-	 * Get the {@link CacheAwareContextLoaderDelegate} to use for transparent
-	 * interaction with the <em>context cache</em>.
+	 * <em>context cache</em>와 투명한 상호교환에 쓰일 {@link CacheAwareContextLoaderDelegate}를 얻음.
 	 */
 	CacheAwareContextLoaderDelegate getCacheAwareContextLoaderDelegate();
 

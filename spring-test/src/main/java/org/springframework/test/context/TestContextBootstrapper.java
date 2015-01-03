@@ -19,27 +19,26 @@ package org.springframework.test.context;
 import java.util.List;
 
 /**
- * {@code TestContextBootstrapper} defines a strategy SPI for bootstrapping the
- * <em>Spring TestContext Framework</em>.
+ * {@code TestContextBootstrapper}는 <em>Spring TestContext Framework</em> 로딩을 위한 전략 SPI를 정의함.
  *
- * <p>A custom bootstrapping strategy can be configured for a test class via
- * {@link BootstrapWith @BootstrapWith}, either directly or as a meta-annotation.
+ * <p> 커스텀 로딩 전략이 테스트 클래스를 위해 설정될수 있음;직접적으로 {@link BootstrapWith @BootstrapWith}를 쓰거나
+ * 메타 어노테이션을 통해서.
+ * </p>
  * See {@link org.springframework.test.context.web.WebAppConfiguration @WebAppConfiguration}
  * for an example.
  *
- * <p>The {@link TestContextManager} uses a {@code TestContextBootstrapper} to
- * {@linkplain #getTestExecutionListeners get the TestExecutionListeners} for the
- * current test and to {@linkplain #buildMergedContextConfiguration build the
- * merged context configuration} necessary to create the {@link TestContext} that
- * it manages.
+ * <p>{@link TestContextManager}는 {@code TestContextBootstrapper}를 사용하여 현재 테스트를 위해
+ * {@linkplain #getTestExecutionListeners TestExecutionListeners}를 얻고 그것이 관리하는 {@link TestContext} 생성에 필요한
+ * {@linkplain #buildMergedContextConfiguration 통합된 context configuration을 생성함}.
+ * </p>
  *
- * <p>Concrete implementations must provide a {@code public} no-args constructor.
+ * <p>구체적인 구현체는 반드시 인자가 없는 {@code public} 생성자를 제공해야함.</p>
  *
- * <p><strong>Note</strong>: this SPI might potentially change in the future in
- * order to accommodate new requirements. Implementers are therefore strongly encouraged
- * <em>not</em> to implement this interface directly but rather to <em>extend</em>
- * {@link org.springframework.test.context.support.AbstractTestContextBootstrapper
- * AbstractTestContextBootstrapper} or one of its concrete subclasses instead.
+ * <p>
+ * <strong>노트</strong>: 이 SPI는 새 요구사항을 만족시키기 위해 잠재적으로 미래에 변경될지 모름.
+ * 구현자들은 그러므로 이 인터페이스를 직접적으로 구현하지 <em>않기를</em> 권장함, {@link org.springframework.test.context.support.AbstractTestContextBootstrapper
+ * AbstractTestContextBootstrapper}(또는 자식클래스)를 상속받는것을 권장함.
+ * </p>
  *
  * @author Sam Brannen
  * @since 4.1
@@ -49,45 +48,42 @@ import java.util.List;
 public interface TestContextBootstrapper {
 
 	/**
-	 * Set the {@link BootstrapContext} to be used by this bootstrapper.
+	 * {@link BootstrapContext} 설정.
 	 */
 	void setBootstrapContext(BootstrapContext bootstrapContext);
 
 	/**
-	 * Get the {@link BootstrapContext} associated with this bootstrapper.
+	 * {@link BootstrapContext} 리턴.
 	 */
 	BootstrapContext getBootstrapContext();
 
 	/**
-	 * Get a list of newly instantiated {@link TestExecutionListener TestExecutionListeners}
-	 * for the test class in the {@link BootstrapContext} associated with this bootstrapper.
-	 * <p>If {@link TestExecutionListeners @TestExecutionListeners} is not
-	 * <em>present</em> on the test class in the {@code BootstrapContext},
-	 * <em>default</em> listeners should be returned. Furthermore, default
-	 * listeners must be sorted using
-	 * {@link org.springframework.core.annotation.AnnotationAwareOrderComparator
-	 * AnnotationAwareOrderComparator}.
-	 * <p>Concrete implementations are free to determine what comprises the
-	 * set of default listeners. However, by default, the Spring TestContext
-	 * Framework will use the
-	 * {@link org.springframework.core.io.support.SpringFactoriesLoader SpringFactoriesLoader}
-	 * mechanism to look up all {@code TestExecutionListener} class names
-	 * configured in all {@code META-INF/spring.factories} files on the classpath.
-	 * <p>The {@link TestExecutionListeners#inheritListeners() inheritListeners}
-	 * flag of {@link TestExecutionListeners @TestExecutionListeners} must be
-	 * taken into consideration. Specifically, if the {@code inheritListeners}
-	 * flag is set to {@code true}, listeners declared for a given test class must
-	 * be appended to the end of the list of listeners declared in superclasses.
-	 * @return a list of {@code TestExecutionListener} instances
+	 * 새롭게 인스턴스로 만든 {@link TestExecutionListener TestExecutionListeners}리스트를 얻음,
+	 * 이 부트스트래퍼와 {@link BootstrapContext}의 테스트 클래스.
+	 * <em>존재하지 않으면</em>, <em>기본</em> 리스너가 반드시 리턴됨.
+	 * 게다가, 기본 리스터들은 {@link org.springframework.core.annotation.AnnotationAwareOrderComparator
+	 * AnnotationAwareOrderComparator}로 반드시 정렬되어야 함.
+	 *
+	 * <p>
+	 * 구현체들은 어떤 기본 리스너들의 집합으로 구성할지 자유롭게 구현할수 있음.
+	 * 그러나, 기본적으로, Spring TestContext Framework는 {@link org.springframework.core.io.support.SpringFactoriesLoader SpringFactoriesLoader}를
+	 * 사용할 것임;클래스 패스의 모든 {@code META-INF/spring.factories} 파일들에 설정된 모든 {@code TestExecutionListener} 클래스 이름을 lookup하기 위해.
+	 * </p>
+	 * <p>{@link TestExecutionListeners @TestExecutionListeners}의 {@link TestExecutionListeners#inheritListeners() inheritListeners} 플래그는
+	 * 반드시 고려되어야 함. 구체적으로, 만약 {@code inheritListeners} 플래그가 {@code true}이면, 주어진 테스트를
+	 * 위해 정의된 리스너들은 반드시 부모 클래스에 정의된 리스너들 리스트 뒤에 덧붙여짐.
+	 * @return {@code TestExecutionListener} 인스턴스 리스트
 	 */
 	List<TestExecutionListener> getTestExecutionListeners();
 
 	/**
-	 * Build the {@linkplain MergedContextConfiguration merged context configuration}
-	 * for the test class in the {@link BootstrapContext} associated with this
-	 * bootstrapper.
-	 * <p>Implementations must take the following into account when building the
-	 * merged configuration:
+	 * 이 부트스트래퍼와 연관된 {@link BootstrapContext} 안에 있는
+	 * 테스트 클래스를 위해 {@linkplain MergedContextConfiguration merged context configuration}을 생성함.
+	 *
+	 * <p>구현체들은 합쳐진 설정을 생성 시 반드시 아래의 사항을 고려해야함:</p>
+	 * <ul>
+	 *
+	 * </ul>
 	 * <ul>
 	 * <li>Context hierarchies declared via {@link ContextHierarchy @ContextHierarchy}
 	 * and {@link ContextConfiguration @ContextConfiguration}</li>

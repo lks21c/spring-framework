@@ -16,30 +16,24 @@
 
 package org.springframework.test.context;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * {@code ActiveProfiles} is a class-level annotation that is used to declare
- * which <em>active bean definition profiles</em> should be used when loading
- * an {@link org.springframework.context.ApplicationContext ApplicationContext}
- * for test classes.
- *
- * <p>As of Spring Framework 4.0, this annotation may be used as a
- * <em>meta-annotation</em> to create custom <em>composed annotations</em>.
+ * {@code ActiveProfiles}은 클래스 레벨 어노테이션으로써 어떤 <em>active bean definition profiles</em>이
+ * 테스트 클래스에서 {@link org.springframework.context.ApplicationContext ApplicationContext}을 로딩할때
+ * 사용되어야 할 지 정의.
+ * <p>
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Sam Brannen
- * @since 3.1
  * @see SmartContextLoader
  * @see MergedContextConfiguration
  * @see ContextConfiguration
  * @see ActiveProfilesResolver
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.context.annotation.Profile
+ * @since 3.1
  */
 @Documented
 @Inherited
@@ -47,74 +41,65 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ActiveProfiles {
 
-	/**
-	 * Alias for {@link #profiles}.
-	 *
-	 * <p>This attribute may <strong>not</strong> be used in conjunction with
-	 * {@link #profiles}, but it may be used <em>instead</em> of {@link #profiles}.
-	 */
-	String[] value() default {};
+    /**
+     * {@link #profiles}의 alias.
+     * <p>
+     * <p>
+     * 이 어트리뷰트는 {@link #profiles}과 같이 사용하지 <strong>못 할 수</strong> 있으나,
+     * {@link #profiles} <strong>대신</strong> 사용 할 수 있음.
+     */
+    String[] value() default {};
 
-	/**
-	 * The bean definition profiles to activate.
-	 *
-	 * <p>This attribute may <strong>not</strong> be used in conjunction with
-	 * {@link #value}, but it may be used <em>instead</em> of {@link #value}.
-	 */
-	String[] profiles() default {};
+    /**
+     * 활성화 시킬 빈 설정 프로파일.
+     */
+    String[] profiles() default {};
 
-	/**
-	 * The type of {@link ActiveProfilesResolver} to use for resolving the active
-	 * bean definition profiles programmatically.
-	 *
-	 * @since 4.0
-	 * @see ActiveProfilesResolver
-	 */
-	Class<? extends ActiveProfilesResolver> resolver() default ActiveProfilesResolver.class;
+    /**
+     * active bean definition profiles을 코드로 resloing 하는데 사용 할 {@link ActiveProfilesResolver} 타입.
+     *
+     * @see ActiveProfilesResolver
+     * @since 4.0
+     */
+    Class<? extends ActiveProfilesResolver> resolver() default ActiveProfilesResolver.class;
 
-	/**
-	 * Whether or not bean definition profiles from superclasses should be
-	 * <em>inherited</em>.
-	 *
-	 * <p>The default value is {@code true}, which means that a test
-	 * class will <em>inherit</em> bean definition profiles defined by a
-	 * test superclass. Specifically, the bean definition profiles for a test
-	 * class will be appended to the list of bean definition profiles
-	 * defined by a test superclass. Thus, subclasses have the option of
-	 * <em>extending</em> the list of bean definition profiles.
-	 *
-	 * <p>If {@code inheritProfiles} is set to {@code false}, the bean
-	 * definition profiles for the test class will <em>shadow</em> and
-	 * effectively replace any bean definition profiles defined by a superclass.
-	 *
-	 * <p>In the following example, the {@code ApplicationContext} for
-	 * {@code BaseTest} will be loaded using only the &quot;base&quot;
-	 * bean definition profile; beans defined in the &quot;extended&quot; profile
-	 * will therefore not be loaded. In contrast, the {@code ApplicationContext}
-	 * for {@code ExtendedTest} will be loaded using the &quot;base&quot;
-	 * <strong>and</strong> &quot;extended&quot; bean definition profiles.
-	 * <pre class="code">
-	 * &#064;ActiveProfiles(&quot;base&quot;)
-	 * &#064;ContextConfiguration
-	 * public class BaseTest {
-	 *     // ...
-	 * }
-	 *
-	 * &#064;ActiveProfiles(&quot;extended&quot;)
-	 * &#064;ContextConfiguration
-	 * public class ExtendedTest extends BaseTest {
-	 *     // ...
-	 * }
-	 * </pre>
-	 *
-	 * <p>Note: {@code @ActiveProfiles} can be used when loading an
-	 * {@code ApplicationContext} from path-based resource locations or
-	 * annotated classes.
-	 *
-	 * @see ContextConfiguration#locations
-	 * @see ContextConfiguration#classes
-	 * @see ContextConfiguration#inheritLocations
-	 */
-	boolean inheritProfiles() default true;
+    /**
+     * 부모 클래스의 bean definition profiles을 <em>상속 받을 지</em> 여부.
+     * <p>
+     * 기본 값은 {@code true}, 즉 테스트 클래스는 부모 클래스의 bean definition profiles를 <em>상속받음</em>.
+     * 구체적으로, 자식 테스트 클래스의 bean definition profiles은 부모 테스트 클래스의 bean definition profiles 리스트에
+     * 추가 됨.
+     * </p>
+     * <p>
+     * 만약 {@code inheritProfiles}이 {@code false}로 설정되면, 테스트 클래스를 위한 부모 클래스의
+     * bean definition profiles은 <em>가려짐</em>.
+     * <p>
+     * <p>
+     * 아래의 예제에서, {@code BaseTest}를 위한 {@code ApplicationContext}은 &quot;base&quot;
+     * bean definition profile에 한해 로딩함;그러므로 &quot;extended&quot; profile은 로딩되지 않음.
+     * 반대로, {@code ExtendedTest}는 &quot;extended&quot; profile만 로딩함.
+     * <pre class="code">
+     * &#064;ActiveProfiles(&quot;base&quot;)
+     * &#064;ContextConfiguration
+     * public class BaseTest {
+     * // ...
+     * }
+     *
+     * &#064;ActiveProfiles(&quot;extended&quot;)
+     * &#064;ContextConfiguration
+     * public class ExtendedTest extends BaseTest {
+     * // ...
+     * }
+     * </pre>
+     * <p>
+     * <p>
+     * 노트: {@code @ActiveProfiles}은 path-based resource 나 어노테이션으로 {@code ApplicationContext}를 로딩 할 수 있음.
+     * </p>
+     *
+     * @see ContextConfiguration#locations
+     * @see ContextConfiguration#classes
+     * @see ContextConfiguration#inheritLocations
+     */
+    boolean inheritProfiles() default true;
 
 }

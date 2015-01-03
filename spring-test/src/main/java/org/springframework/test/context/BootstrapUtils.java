@@ -18,15 +18,13 @@ package org.springframework.test.context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.util.ClassUtils;
 
-import static org.springframework.beans.BeanUtils.*;
-import static org.springframework.core.annotation.AnnotationUtils.*;
+import static org.springframework.beans.BeanUtils.instantiateClass;
+import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
 /**
- * {@code BootstrapUtils} is a collection of utility methods to assist with
- * bootstrapping the <em>Spring TestContext Framework</em>.
+ * {@code BootstrapUtils}은 유틸리티 메서드의 집합으로 <em>Spring TestContext Framework</em>를 로딩하는것을 도와줌.
  *
  * @author Sam Brannen
  * @since 4.1
@@ -46,6 +44,7 @@ abstract class BootstrapUtils {
 	}
 
 	/**
+	 *
 	 * Resolve the {@link TestContextBootstrapper} type for the test class in the
 	 * supplied {@link BootstrapContext}, instantiate it, and provide it a reference
 	 * to the {@link BootstrapContext}.

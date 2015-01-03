@@ -16,19 +16,13 @@
 
 package org.springframework.test.context;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * {@code @BootstrapWith} defines class-level metadata that is used to determine
- * how to bootstrap the <em>Spring TestContext Framework</em>.
+ * {@code @BootstrapWith}는 클레스 레벨 메타 데이터를 정의함, 어떻게 <em>Spring TestContext Framework</em>를 로딩하는지 정의하는데 쓰여짐.
  *
- * <p>This annotation may also be used as a <em>meta-annotation</em> to create
- * custom <em>composed annotations</em>.
+ * 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Sam Brannen
  * @since 4.1
@@ -42,8 +36,8 @@ import java.lang.annotation.Target;
 public @interface BootstrapWith {
 
 	/**
-	 * The {@link TestContextBootstrapper} to use to bootstrap the <em>Spring
-	 * TestContext Framework</em>.
+	 * {@link TestContextBootstrapper}가 <em>Spring
+	 * TestContext Framework</em>를 로딩하는데 쓰여짐.
 	 */
 	Class<? extends TestContextBootstrapper> value() default TestContextBootstrapper.class;
 
