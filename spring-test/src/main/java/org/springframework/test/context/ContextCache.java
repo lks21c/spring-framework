@@ -31,12 +31,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * {@link MergedContextConfiguration} 인스턴스 들의 {@code ApplicationContexts} 캐시를 유지함.
  *
  *
- *
- * <p>This has significant performance benefits if initializing the context would take time.
- * While initializing a Spring context itself is very quick, some beans in a context, such
- * as a {@code LocalSessionFactoryBean} for working with Hibernate, may take some time to
- * initialize. Hence it often makes sense to perform that initialization only once per
- * test suite.
+ * <p>이것은 컨텍스트 초기화가 시간이 걸릴 시 중요한 퍼포먼스 이점이 있음.
+ * spring context 자신은 매우 빠르게 초기화 되는동안에도, 컨텍스트의 몇몇 빈들(예를 들어
+ * 하이버 네이트와 연동하는 {@code LocalSessionFactoryBean})은 초기화에 시간이 꽤 거릴수 있음.
+ * 그러므로 test suite에서 한번의 초기화만 수행하는 것이 말이 됨.
+ * </p>
  *
  * @author Sam Brannen
  * @author Juergen Hoeller
@@ -45,7 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 class ContextCache {
 
 	/**
-	 * Map of context keys to Spring {@code ApplicationContext} instances.
+	 * Spring {@code ApplicationContext} 인스턴스의 key Map.
 	 */
 	private final Map<MergedContextConfiguration, ApplicationContext> contextMap =
 			new ConcurrentHashMap<MergedContextConfiguration, ApplicationContext>(64);
