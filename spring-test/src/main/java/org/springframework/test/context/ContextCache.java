@@ -16,25 +16,21 @@
 
 package org.springframework.test.context;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.test.annotation.DirtiesContext.HierarchyMode;
 import org.springframework.util.Assert;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * Cache for Spring {@link ApplicationContext ApplicationContexts} in a test environment.
+ * 테스트 환경의 스프링 {@link ApplicationContext ApplicationContexts}를 위한 캐시.
+ * {@link MergedContextConfiguration} 인스턴스 들의 {@code ApplicationContexts} 캐시를 유지함.
  *
- * <p>Maintains a cache of {@code ApplicationContexts} keyed by
- * {@link MergedContextConfiguration} instances.
+ *
  *
  * <p>This has significant performance benefits if initializing the context would take time.
  * While initializing a Spring context itself is very quick, some beans in a context, such

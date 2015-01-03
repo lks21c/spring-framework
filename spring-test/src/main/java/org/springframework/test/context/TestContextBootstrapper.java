@@ -82,26 +82,18 @@ public interface TestContextBootstrapper {
 	 *
 	 * <p>구현체들은 합쳐진 설정을 생성 시 반드시 아래의 사항을 고려해야함:</p>
 	 * <ul>
-	 *
+	 * <li>{@link ContextHierarchy @ContextHierarchy}와 {@link ContextConfiguration @ContextConfiguration}를 통해 정의된 context 구조</li>
+	 * <li>{@link ActiveProfiles @ActiveProfiles}를 통해 정의된 활성화된 bean definition profiles</li>
 	 * </ul>
 	 * <ul>
-	 * <li>Context hierarchies declared via {@link ContextHierarchy @ContextHierarchy}
-	 * and {@link ContextConfiguration @ContextConfiguration}</li>
-	 * <li>Active bean definition profiles declared via {@link ActiveProfiles @ActiveProfiles}</li>
-	 * <li>{@linkplain org.springframework.context.ApplicationContextInitializer
-	 * Context initializers} declared via {@link ContextConfiguration#initializers}</li>
-	 * </ul>
-	 * <p>Consult the Javadoc for the aforementioned annotations for details on
-	 * the required semantics.
-	 * <p>When determining which {@link ContextLoader} to use for a given test
-	 * class, the following algorithm should be used:
+	 *
+	 * <p>위에 언급된 어노테이션 들은 javadoc을 통해서 자세한 내용을 확일 할 것.</p>
+	 * <p>어떤 {@link ContextLoader}가 주어진 테스트에서 사용될 지 판단하기 위해, 아래의 알고리즘이 쓰여져야 함:</p>
 	 * <ol>
-	 * <li>If a {@code ContextLoader} class has been explicitly declared via
-	 * {@link ContextConfiguration#loader}, use it.</li>
-	 * <li>Otherwise, concrete implementations are free to determine which
-	 * {@code ContextLoader} class to use as as default.</li>
+	 * <li>만약 {@code ContextLoader} 클래스가 명시적으로 {@link ContextConfiguration#loader}를 통해 정의되었으면 사용해야함.</li>
+	 * <li>그렇지 않으면, 구현체는 어떤 {@code ContextLoader} 클래스를 기본으로 사용할 지 선택할 수 있음.</li>
 	 * </ol>
-	 * @return the merged context configuration, never {@code null}
+	 * @return 합쳐진 설정, 절대 {@code null}이면 안됨
 	 */
 	MergedContextConfiguration buildMergedContextConfiguration();
 

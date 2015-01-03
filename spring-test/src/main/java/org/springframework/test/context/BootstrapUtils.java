@@ -44,19 +44,17 @@ abstract class BootstrapUtils {
 	}
 
 	/**
+	 * {@link BootstrapContext} 안의 테스트 클래스를 위한 {@link TestContextBootstrapper} 타입을 reslove하고,
+	 * 인스턴스화 하고, 레퍼런스를 {@link BootstrapContext}에 제공함.
 	 *
-	 * Resolve the {@link TestContextBootstrapper} type for the test class in the
-	 * supplied {@link BootstrapContext}, instantiate it, and provide it a reference
-	 * to the {@link BootstrapContext}.
+	 * <p>만약 {@link BootstrapWith @BootstrapWith} 어노테이션에 테스트 클래스에 있으면(직접적으로나 메타 어노테이션으로),
+	 * {@link BootstrapWith#value value}은 bootstrapper 타입으로 쓰여짐.
+	 * 그렇지 않을경우, {@link org.springframework.test.context.support.DefaultTestContextBootstrapper
+	 * DefaultTestContextBootstrapper}이 쓰여짐.
+	 * </p>
 	 *
-	 * <p>If the {@link BootstrapWith @BootstrapWith} annotation is present on
-	 * the test class, either directly or as a meta-annotation, then its
-	 * {@link BootstrapWith#value value} will be used as the bootstrapper type.
-	 * Otherwise, the {@link org.springframework.test.context.support.DefaultTestContextBootstrapper
-	 * DefaultTestContextBootstrapper} will be used.
-	 *
-	 * @param bootstrapContext the bootstrap context to use
-	 * @return a fully configured {@code TestContextBootstrapper}
+	 * @param bootstrapContext 사용할 bootstrap context
+	 * @return 완전히 설정된 {@code TestContextBootstrapper}
 	 */
 	@SuppressWarnings("unchecked")
 	static TestContextBootstrapper resolveTestContextBootstrapper(BootstrapContext bootstrapContext) {

@@ -20,9 +20,9 @@ import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.TestContextBootstrapper;
 
 /**
- * Default implementation of the {@link TestContextBootstrapper} SPI.
+ * 기본{@link TestContextBootstrapper} SPI의 구현.
  *
- * <p>Uses {@link DelegatingSmartContextLoader} as the default {@link ContextLoader}.
+ * <p>{@link DelegatingSmartContextLoader}를 기본 {@link ContextLoader}로 사용함.</p>
  *
  * @author Sam Brannen
  * @since 4.1
@@ -30,7 +30,7 @@ import org.springframework.test.context.TestContextBootstrapper;
 public class DefaultTestContextBootstrapper extends AbstractTestContextBootstrapper {
 
 	/**
-	 * Returns {@link DelegatingSmartContextLoader}.
+	 * {@link DelegatingSmartContextLoader} 리턴.
 	 */
 	@Override
 	protected Class<? extends ContextLoader> getDefaultContextLoaderClass(Class<?> testClass) {
