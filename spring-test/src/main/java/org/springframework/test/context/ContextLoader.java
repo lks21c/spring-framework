@@ -19,12 +19,13 @@ package org.springframework.test.context;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Strategy interface for loading an {@link ApplicationContext application context}
- * for an integration test managed by the Spring TestContext Framework.
+ * {@link ApplicationContext application context}를 로딩하는 전략 인터페이스,
+ * Spring TestContext Framework에 의해 관리되는 통합 테스트 용도.
  *
- * <p><b>Note</b>: as of Spring 3.1, implement {@link SmartContextLoader} instead
- * of this interface in order to provide support for annotated classes, active
- * bean definition profiles, and application context initializers.
+ * <p><b>노트:</b>스프링 3.1에서, 이 인터페이스 대신에 {@link SmartContextLoader}를 구현하여
+ * 어노테이션, 활성화 된 bean definition profiles, 어플리케이션 context initializers를 제공하는 것을 권장함.</p>
+ *
+ * <p><font color="red">이 인터페이스 대신에 쓰일 {@link SmartContextLoader} 한글화에 집중.</font></p>
  *
  * <p>Clients of a ContextLoader should call
  * {@link #processLocations(Class, String...) processLocations()} prior to

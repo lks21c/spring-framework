@@ -151,7 +151,7 @@ class ContextCache {
 	 * {@link ConfigurableApplicationContext}의 인스턴스 라면,
 	 * 주어진 key의 context를 캐시에서 제거하고 명시적으로 {@linkplain ConfigurableApplicationContext#close() 종료함}.
 	 *
-	 * <p>일반적으로 싱글턴 빈의 상태를 바꾸면(잠재적으로 context의 미래 interaction에 영향을 끼치는) 이메서드만 호출하면 됨.</p>
+	 * <p>일반적으로 싱글턴 빈의 상태가 바뀌었을때,이 메서드만 호출하면 됨.(잠재적으로 추후 context와의 정보교환에 영향을 끼치는) </p>
 	 * <p>추가로, {@code HierarchyMode}를 준수함. Javadoc으로 {@link HierarchyMode}의 상세사항을 참고할것. </p>
 	 *
 	 * @param key context key (절대 {@code null}이면 안됨)

@@ -16,60 +16,50 @@
 
 package org.springframework.test.context;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.lang.annotation.*;
+
 /**
- * {@code @ContextConfiguration} defines class-level metadata that is used to determine
- * how to load and configure an {@link org.springframework.context.ApplicationContext
- * ApplicationContext} for integration tests.
+ * {@code @ContextConfiguration}은 클레스 레벨 메타데이터를 정의하여 통합 테스트를 위해 어떻게 {@link org.springframework.context.ApplicationContext
+ * ApplicationContext}을 로딩하고 설정할지 정의함.
  *
- * <h3>Supported Resource Types</h3>
- *
- * <p>
- * Prior to Spring 3.1, only path-based resource locations (typically XML configuration
- * files) were supported. As of Spring 3.1, {@linkplain #loader context loaders} may
- * choose to support <em>either</em> path-based <em>or</em> class-based resources. As of
- * Spring 4.0.4, {@linkplain #loader context loaders} may choose to support path-based
- * <em>and</em> class-based resources simultaneously. Consequently
- * {@code @ContextConfiguration} can be used to declare either path-based resource
- * locations (via the {@link #locations} or {@link #value} attribute) <em>or</em>
- * annotated classes (via the {@link #classes} attribute). Note, however, that most
- * implementations of {@link SmartContextLoader} only support a single resource type. As
- * of Spring 4.1, path-based resource locations may be either XML configuration files or
- * Groovy scripts (if Groovy is on the classpath). Of course, third-party frameworks may
- * choose to support additional types of path-based resources.
- *
- * <h3>Annotated Classes</h3>
+ * <h3>지원하는 리소스 타입들</h3>
  *
  * <p>
- * The term <em>annotated class</em> can refer to any of the following.
+ * 스프링 3.1 이전, path-based 리소스 경로(일반적으로 xml 설정 파일들)만 지원되었음.
+ * 스프링 3.1에 와서, {@linkplain #loader context loaders}은 path-based <em>또는</em> class-based 리소스를 지원하게됨.
+ * 스프링 4.04에 와서, {@linkplain #loader context loaders}은 path-based <em>와</em> class-based 리소스를 동시에 지원할수 있게됨.
+ * 결론적으로 {@code @ContextConfiguration}은 2가지 방법 다 사용이 가능함({@link #locations} 또는 {@link #value} attribute를 통해).
+ * 노트: 그러나, {@link SmartContextLoader}의 대부분 구현체들은 오직 단일 리소스 타입만 지원함.
+ * 스프링 4.1에 와서, path-based resource location은 XML configuration files 또는 그루비 스크립트일수 있음(만약 그루비가
+ * class path에 있으면). 물론, 3rd party 프레임워크들은 추가로 path-based 리소스 타입을 선택 할 수 있음.
  *
- * <ul>
- * <li>A class annotated with {@link org.springframework.context.annotation.Configuration @Configuration}</li>
- * <li>A component (i.e., a class annotated with
+ * <h3>어노테이션 클래스</h3>
+ *
+ *
+ * <p>
+ * <em>어노테이션 클래스</em>는 아래의 사항들을 말함.
+ *
+ *  <ul>
+ * <li>{@link org.springframework.context.annotation.Configuration @Configuration} 어노테이션이 붙은 클래스</li>
+ * <li>component (i.e., 다음의 어노테이션이 붙은 클래스
  * {@link org.springframework.stereotype.Component @Component},
  * {@link org.springframework.stereotype.Service @Service},
  * {@link org.springframework.stereotype.Repository @Repository}, etc.)</li>
- * <li>A JSR-330 compliant class that is annotated with {@code javax.inject} annotations</li>
- * <li>Any other class that contains {@link org.springframework.context.annotation.Bean @Bean}-methods</li>
+ * <li>JSR-330 을 준수하고 {@code javax.inject} 어노테이션이 붙은 클래스</li>
+ * <li>{@link org.springframework.context.annotation.Bean @Bean}-methods를 포함하는 클래스</li>
  * </ul>
  *
  * <p>
- * Consult the Javadoc for {@link org.springframework.context.annotation.Configuration @Configuration}
- * and {@link org.springframework.context.annotation.Bean @Bean} for further
- * information regarding the configuration and semantics of <em>annotated classes</em>.
+ * JavaDoc에서 아래의 사항들을 참고 할 것. <br />
+ * {@link org.springframework.context.annotation.Configuration @Configuration}
+ * , {@link org.springframework.context.annotation.Bean @Bean}.
  *
  * <p>
- * As of Spring Framework 4.0, this annotation may be used as a <em>meta-annotation</em>
- * to create custom <em>composed annotations</em>.
+ * 스프링 프레임워크 4.0 이후, 이 어노테이션은 커스텀 <em>composed annotations</em> 어노테이션을 생성하기 위한
+ * <em>meta-annotation</em>로 사용될 수 있음.
  *
  * @author Sam Brannen
  * @since 2.5
@@ -89,10 +79,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 public @interface ContextConfiguration {
 
 	/**
-	 * Alias for {@link #locations}.
+	 * {@link #locations}의 Alias.
 	 *
-	 * <p>This attribute may <strong>not</strong> be used in conjunction with
-	 * {@link #locations}, but it may be used instead of {@link #locations}.
+	 * <p>{@link #locations} 대신에 쓰는 것은 괜찮지만 동시에 같이 쓰지 말 것.</p>
 	 *
 	 * @since 3.0
 	 * @see #inheritLocations
@@ -266,9 +255,7 @@ public @interface ContextConfiguration {
 	boolean inheritInitializers() default true;
 
 	/**
-	 * The type of {@link SmartContextLoader} (or {@link ContextLoader}) to use
-	 * for loading an {@link org.springframework.context.ApplicationContext
-	 * ApplicationContext}.
+	 * ApplicationContext}로딩에 사용할 {@link SmartContextLoader} (or {@link ContextLoader}) 타입.
 	 *
 	 * <p>If not specified, the loader will be inherited from the first superclass
 	 * that is annotated with {@code @ContextConfiguration} and specifies an
