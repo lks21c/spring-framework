@@ -20,7 +20,7 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 /**
- * Default implementation of the {@link BootstrapContext} interface.
+ * {@link BootstrapContext} 인터페이스의 기본 구현.
  *
  * @author Sam Brannen
  * @since 4.1
@@ -55,7 +55,7 @@ class DefaultBootstrapContext implements BootstrapContext {
 	}
 
 	/**
-	 * Provide a String representation of this bootstrap context's state.
+	 * 이 bootstrap context의 상태를 표현함.
 	 */
 	@Override
 	public String toString() {

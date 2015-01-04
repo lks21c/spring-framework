@@ -50,10 +50,8 @@ class ContextCache {
 			new ConcurrentHashMap<MergedContextConfiguration, ApplicationContext>(64);
 
 	/**
-	 * Map of parent keys to sets of children keys, representing a top-down <em>tree</em>
-	 * of context hierarchies. This information is used for determining which subtrees
-	 * need to be recursively removed and closed when removing a context that is a parent
-	 * of other contexts.
+	 * 자식 key들을 가진 부모 key들의 Map으로, context 구조의 top-down <em>트리</em>를 표현.
+	 * 이 정보는 다른 컨텍스트들의 부모 컨텍스트를 지울 때 어떤 자식 트리가 재귀적으로 지워지고 닫혀야 할지 정의함.
 	 */
 	private final Map<MergedContextConfiguration, Set<MergedContextConfiguration>> hierarchyMap =
 			new ConcurrentHashMap<MergedContextConfiguration, Set<MergedContextConfiguration>>(64);
@@ -64,7 +62,7 @@ class ContextCache {
 
 
 	/**
-	 * Clear all contexts from the cache and clear context hierarchy information as well.
+	 * 캐시로 부터 모든 컨텍스트와 context 구조 정보를 를 clear함.
 	 */
 	public void clear() {
 		this.contextMap.clear();
@@ -72,7 +70,7 @@ class ContextCache {
 	}
 
 	/**
-	 * Clear hit and miss count statistics for the cache (i.e., reset counters to zero).
+	 * 캐시의 hit/miss 카운트를 clear함(i.e., 0으로 카운터 리셋).
 	 */
 	public void clearStatistics() {
 		this.hitCount.set(0);
@@ -80,9 +78,10 @@ class ContextCache {
 	}
 
 	/**
-	 * Determine whether there is a cached context for the given key.
-	 * @param key the context key (never {@code null})
-	 * @return {@code true} if the cache contains a context with the given key
+	 *
+	 * 주어진 키로 캐시된 컨텍스트가 있는지 확인.
+	 * @param key context key (절대 {@code null}이면 안됨)
+	 * @return {@code true} 만약 캐시가 주어진 key로 컨텍스트를 포함하고 있는 경우
 	 */
 	public boolean contains(MergedContextConfiguration key) {
 		Assert.notNull(key, "Key must not be null");
@@ -90,12 +89,10 @@ class ContextCache {
 	}
 
 	/**
-	 * Obtain a cached {@code ApplicationContext} for the given key.
-	 * <p>The {@link #getHitCount() hit} and {@link #getMissCount() miss} counts will
-	 * be updated accordingly.
-	 * @param key the context key (never {@code null})
-	 * @return the corresponding {@code ApplicationContext} instance, or {@code null}
-	 * if not found in the cache
+	 * 주어진 key로 캐시된 {@code ApplicationContext}을 획득함.
+	 * <p>이에 따라 {@link #getHitCount() hit}와 {@link #getMissCount() miss} 카운트가 업데이트 됨.</p>
+	 * @param key context key (절대 {@code null}이면 안됨)
+	 * @return 원하는 {@code ApplicationContext} 인스턴스, 없을 시 {@code null}
 	 * @see #remove
 	 */
 	public ApplicationContext get(MergedContextConfiguration key) {
@@ -111,27 +108,25 @@ class ContextCache {
 	}
 
 	/**
-	 * Get the overall hit count for this cache.
-	 * <p>A <em>hit</em> is an access to the cache, which returned a non-null context
-	 * for a queried key.
+	 * 이 캐시를 위한 종합적인 히트 카운트를 리턴.
+	 * <p><em>hit</em> 는 캐시에 접근시도 시, null이 아닌 컨텍스트를 요청한 key로부터 리턴하는 것.</p>
 	 */
 	public int getHitCount() {
 		return this.hitCount.get();
 	}
 
 	/**
-	 * Get the overall miss count for this cache.
-	 * <p>A <em>miss</em> is an access to the cache, which returned a {@code null} context
-	 * for a queried key.
+	 * 이 캐시를 위한 종합적인 미스 카운트를 리턴.
+	 * <p></p><em>miss</em>는 캐시에 접근시도 시, {@code null}을 요청한 key로부터 리턴하는 것.</p>
 	 */
 	public int getMissCount() {
 		return this.missCount.get();
 	}
 
 	/**
-	 * Explicitly add an {@code ApplicationContext} instance to the cache under the given key.
-	 * @param key the context key (never {@code null})
-	 * @param context the {@code ApplicationContext} instance (never {@code null})
+	 * 주어진 키의 {@code ApplicationContext} 인스턴스를 명시적으로 캐시에 추가함.
+	 * @param key context key (절대 {@code null}이면 안됨)
+	 * @param context {@code ApplicationContext} 인스턴스 (절대 {@code null}이면 안됨)
 	 */
 	public void put(MergedContextConfiguration key, ApplicationContext context) {
 		Assert.notNull(key, "Key must not be null");
@@ -153,23 +148,19 @@ class ContextCache {
 	}
 
 	/**
-	 * Remove the context with the given key from the cache and explicitly
-	 * {@linkplain ConfigurableApplicationContext#close() close} it if it is an
-	 * instance of {@link ConfigurableApplicationContext}.
-	 * <p>Generally speaking, you would only call this method if you change the
-	 * state of a singleton bean, potentially affecting future interaction with
-	 * the context.
-	 * <p>In addition, the semantics of the supplied {@code HierarchyMode} will
-	 * be honored. See the Javadoc for {@link HierarchyMode} for details.
-	 * @param key the context key; never {@code null}
-	 * @param hierarchyMode the hierarchy mode; may be {@code null} if the context
-	 * is not part of a hierarchy
+	 * {@link ConfigurableApplicationContext}의 인스턴스 라면,
+	 * 주어진 key의 context를 캐시에서 제거하고 명시적으로 {@linkplain ConfigurableApplicationContext#close() 종료함}.
+	 *
+	 * <p>일반적으로 싱글턴 빈의 상태를 바꾸면(잠재적으로 context의 미래 interaction에 영향을 끼치는) 이메서드만 호출하면 됨.</p>
+	 * <p>추가로, {@code HierarchyMode}를 준수함. Javadoc으로 {@link HierarchyMode}의 상세사항을 참고할것. </p>
+	 *
+	 * @param key context key (절대 {@code null}이면 안됨)
+	 * @param hierarchyMode hierarchy mode; context가 구조를 이루지 않는다면 {@code null} 가능
 	 */
 	public void remove(MergedContextConfiguration key, HierarchyMode hierarchyMode) {
 		Assert.notNull(key, "Key must not be null");
 
-		// startKey is the level at which to begin clearing the cache, depending
-		// on the configured hierarchy mode.
+		// startKey는 캐시 clear를 시작할 level로, hierarchy mode 설정에 의존함.
 		MergedContextConfiguration startKey = key;
 		if (hierarchyMode == HierarchyMode.EXHAUSTIVE) {
 			while (startKey.getParent() != null) {
@@ -180,15 +171,14 @@ class ContextCache {
 		List<MergedContextConfiguration> removedContexts = new ArrayList<MergedContextConfiguration>();
 		remove(removedContexts, startKey);
 
-		// Remove all remaining references to any removed contexts from the
-		// hierarchy map.
+		// 삭제된 context를 가리키는 모든 남아있는 reference를 hierarchy map에서 지움.
 		for (MergedContextConfiguration currentKey : removedContexts) {
 			for (Set<MergedContextConfiguration> children : this.hierarchyMap.values()) {
 				children.remove(currentKey);
 			}
 		}
 
-		// Remove empty entries from the hierarchy map.
+		// hierarchy map에서 빈 엔트리들을 지움.
 		for (MergedContextConfiguration currentKey : this.hierarchyMap.keySet()) {
 			if (this.hierarchyMap.get(currentKey).isEmpty()) {
 				this.hierarchyMap.remove(currentKey);
@@ -202,15 +192,14 @@ class ContextCache {
 		Set<MergedContextConfiguration> children = this.hierarchyMap.get(key);
 		if (children != null) {
 			for (MergedContextConfiguration child : children) {
-				// Recurse through lower levels
+				// low level로 재귀호출
 				remove(removedContexts, child);
 			}
-			// Remove the set of children for the current context from the hierarchy map.
+			// hierarchy map으로 부터 현재 context의 자식 set을 제거
 			this.hierarchyMap.remove(key);
 		}
 
-		// Physically remove and close leaf nodes first (i.e., on the way back up the
-		// stack as opposed to prior to the recursive call).
+		// 물리적으로 leaft 노드들을 먼저 제거하고 종료
 		ApplicationContext context = this.contextMap.remove(key);
 		if (context instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) context).close();
@@ -219,25 +208,24 @@ class ContextCache {
 	}
 
 	/**
-	 * Determine the number of contexts currently stored in the cache.
-	 * <p>If the cache contains more than {@code Integer.MAX_VALUE} elements,
-	 * this method returns {@code Integer.MAX_VALUE}.
+	 * 현재 저장되어 있는 캐시의 컨텍스트의 개수를 리턴.
+	 * <p>만약 캐시가 {@code Integer.MAX_VALUE} 이상의 개수를 보유하면, 이 메서드는 {@code Integer.MAX_VALUE}를 리턴함.</p>
 	 */
 	public int size() {
 		return this.contextMap.size();
 	}
 
 	/**
-	 * Determine the number of parent contexts currently tracked within the cache.
+	 * 캐시 안에서 현재 추적되는 부모 컨텍스트의 개수를 리턴.
 	 */
 	public int getParentContextCount() {
 		return this.hierarchyMap.size();
 	}
 
 	/**
-	 * Generate a text string, which contains the {@linkplain #size} as well
-	 * as the {@linkplain #getHitCount() hit}, {@linkplain #getMissCount() miss},
-	 * and {@linkplain #getParentContextCount() parent context} counts.
+	 * 아래의 정보를 포함하여 toString 생성.
+	 * {@linkplain #size}, @linkplain #getHitCount() hit}, {@linkplain #getMissCount() miss},
+	 * {@linkplain #getParentContextCount() parent context} 카운트.
 	 */
 	@Override
 	public String toString() {
