@@ -89,45 +89,39 @@ public @interface ContextConfiguration {
 	String[] value() default {};
 
 	/**
-	 * The resource locations to use for loading an
-	 * {@link org.springframework.context.ApplicationContext ApplicationContext}.
+     * {@link org.springframework.context.ApplicationContext ApplicationContext}를 로딩하는데 쓰는
+     * 리소스 위치들.
+     *
+     * <p>런타임에 location이 어떻게 인터프리트 되는지(특히 상대 경로의 경우) 자세한 정보는 Javadoc {@link org.springframework.test.context.support.AbstractContextLoader#modifyLocations
+     * AbstractContextLoader.modifyLocations()}를 확일 할 것.
+     * 또한, 아무것도 명시되지 않았을대 쓰일 기본 위치에 대한 상세 정보는 {@link org.springframework.test.context.support.AbstractContextLoader#generateDefaultLocations
+     * AbstractContextLoader.generateDefaultLocations()}를 참고 할 것.
+     * </p>
 	 *
-	 * <p>Check out the Javadoc for
-	 * {@link org.springframework.test.context.support.AbstractContextLoader#modifyLocations
-	 * AbstractContextLoader.modifyLocations()} for details on how a location
-	 * will be interpreted at runtime, in particular in case of a relative
-	 * path. Also, check out the documentation on
-	 * {@link org.springframework.test.context.support.AbstractContextLoader#generateDefaultLocations
-	 * AbstractContextLoader.generateDefaultLocations()} for details on the
-	 * default locations that are going to be used if none are specified.
-	 *
-	 * <p>Note that the aforementioned default rules only apply for a standard
-	 * {@link org.springframework.test.context.support.AbstractContextLoader
-	 * AbstractContextLoader} subclass such as
-	 * {@link org.springframework.test.context.support.GenericXmlContextLoader GenericXmlContextLoader} or
-	 * {@link org.springframework.test.context.support.GenericGroovyXmlContextLoader GenericGroovyXmlContextLoader}
-	 * which are the effective default implementations used at runtime if
-	 * {@code locations} are configured. See the documentation for {@link #loader}
-	 * for further details regarding default loaders.
-	 *
-	 * <p>This attribute may <strong>not</strong> be used in conjunction with
-	 * {@link #value}, but it may be used instead of {@link #value}.
-	 *
+     * <p>노트: 위의 기본 룰은 {@link org.springframework.test.context.support.AbstractContextLoader
+     * AbstractContextLoader}의 자식 클래스 들에 적용됨.
+     * 예: {@link org.springframework.test.context.support.GenericXmlContextLoader GenericXmlContextLoader} 또는
+     * {@link org.springframework.test.context.support.GenericGroovyXmlContextLoader GenericGroovyXmlContextLoader}
+     * (만약 {@code locations}이 설정되었을 때 쓰여질 효과전 기본 구현체)
+     * 기본 로더에 관한 자세한 정보는 {@link #loader}를 참고할 것.
+     * </p>
+     *
+     * <p>{@link #value} 대신에 쓰는 것은 괜찮지만 동시에 같이 쓰지 말 것.</p>
+     *
 	 * @since 2.5
 	 * @see #inheritLocations
 	 */
 	String[] locations() default {};
 
 	/**
-	 * The <em>annotated classes</em> to use for loading an
-	 * {@link org.springframework.context.ApplicationContext ApplicationContext}.
+     * {@link org.springframework.context.ApplicationContext ApplicationContext} 로딩에 쓰일
+     * <em>어노테이션 클래스</em>.
 	 *
-	 * <p>Check out the Javadoc for
-	 * {@link org.springframework.test.context.support.AnnotationConfigContextLoader#detectDefaultConfigurationClasses
-	 * AnnotationConfigContextLoader.detectDefaultConfigurationClasses()} for details
-	 * on how default configuration classes will be detected if no
-	 * <em>annotated classes</em> are specified. See the documentation for
-	 * {@link #loader} for further details regarding default loaders.
+     * <p><em>어노테이션 클래스</em>가 명시되지 않았을 때 기본 설정 클래스가 어떻게 감지되는지 자세한 정보는
+     * {@link org.springframework.test.context.support.AnnotationConfigContextLoader#detectDefaultConfigurationClasses
+     * AnnotationConfigContextLoader.detectDefaultConfigurationClasses()}를 참고할 것.
+     *  기본 로더에 관한 자세한 정보는 {@link #loader}를 참고할 것.
+     *  </p>
 	 *
 	 * @since 3.1
 	 * @see org.springframework.context.annotation.Configuration
@@ -137,9 +131,11 @@ public @interface ContextConfiguration {
 	Class<?>[] classes() default {};
 
 	/**
-	 * The application context <em>initializer classes</em> to use for initializing
-	 * a {@link ConfigurableApplicationContext}.
+     * {@link ConfigurableApplicationContext}를 initializing 하는데 쓰일 어플리케이션 context
+     * <em>initializer 클래스</em>.
 	 *
+     * <p></p>
+     *
 	 * <p>The concrete {@code ConfigurableApplicationContext} type supported by each
 	 * declared initializer must be compatible with the type of {@code ApplicationContext}
 	 * created by the {@link SmartContextLoader} in use.
@@ -257,19 +253,15 @@ public @interface ContextConfiguration {
 	/**
 	 * ApplicationContext}로딩에 사용할 {@link SmartContextLoader} (or {@link ContextLoader}) 타입.
 	 *
-	 * <p>If not specified, the loader will be inherited from the first superclass
-	 * that is annotated with {@code @ContextConfiguration} and specifies an
-	 * explicit loader. If no class in the hierarchy specifies an explicit
-	 * loader, a default loader will be used instead.
-	 *
-	 * <p>The default concrete implementation chosen at runtime will be either
-	 * {@link org.springframework.test.context.support.DelegatingSmartContextLoader
-	 * DelegatingSmartContextLoader} or
-	 * {@link org.springframework.test.context.web.WebDelegatingSmartContextLoader
-	 * WebDelegatingSmartContextLoader} depending on the absence or presence of
-	 * {@link org.springframework.test.context.web.WebAppConfiguration
-	 * &#064;WebAppConfiguration}. For further details on the default behavior
-	 * of various concrete {@code SmartContextLoaders}, check out the Javadoc for
+     * <p>명시하지 않을 시, {@code @ContextConfiguration}과 로더를 명시한 첫 부모클래스로부터
+     * 로더를 상솓 받음. 만약 어떤 상위 구조도 로더를 명시하지 않으면, 기본 로더가 사용됨.
+     *
+     * 런타임에 선택될 기본 구현체는 {@link org.springframework.test.context.support.DelegatingSmartContextLoader
+     * DelegatingSmartContextLoader} 또는 {@link org.springframework.test.context.web.WebDelegatingSmartContextLoader
+     * WebDelegatingSmartContextLoader}가 {@link org.springframework.test.context.web.WebAppConfiguration
+     * &#064;WebAppConfiguration} 존재여부에 따라 결정 됨.
+     *
+     * 다양한 {@code SmartContextLoaders} 구현체의 자세한 정보는 아래를 참고할 것.
 	 * {@link org.springframework.test.context.support.AbstractContextLoader AbstractContextLoader},
 	 * {@link org.springframework.test.context.support.GenericXmlContextLoader GenericXmlContextLoader},
 	 * {@link org.springframework.test.context.support.GenericGroovyXmlContextLoader GenericGroovyXmlContextLoader},
@@ -283,16 +275,16 @@ public @interface ContextConfiguration {
 	Class<? extends ContextLoader> loader() default ContextLoader.class;
 
 	/**
-	 * The name of the context hierarchy level represented by this configuration.
+     *
+     * 이 설정에서 표현된 context 구조 level의 이름.
+     *
+     * <p>만약 명시되지 않으면 이 구조안에서 정의된 모든 컨텍스트의 숫자 레벨.</p>
 	 *
-	 * <p>If not specified the name will be inferred based on the numerical level
-	 * within all declared contexts within the hierarchy.
-	 *
-	 * <p>This attribute is only applicable when used within a test class hierarchy
-	 * that is configured using {@code @ContextHierarchy}, in which case the name
-	 * can be used for <em>merging</em> or <em>overriding</em> this configuration
-	 * with configuration of the same name in hierarchy levels defined in superclasses.
-	 * See the Javadoc for {@link ContextHierarchy @ContextHierarchy} for details.
+     * <p>이 어트리뷰트는 {@code @ContextHierarchy}를 사용한 test 클래스 구조에서만 사용가능함.
+     * 이름은 <em>merging</em> 또는 <em>overriding</em> 용도로 사용가능하고 부모 클래스에서 정의된
+     * 동일한 hierachy level 이름으로 사용 가능.
+     * 상세정보는 {@link ContextHierarchy @ContextHierarchy}를 볼 것.
+     * </p>
 	 *
 	 * @since 3.2.2
 	 */
