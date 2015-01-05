@@ -230,9 +230,9 @@ public class ContextConfigurationAttributes {
 
 	/**
 	 *
-	 * Determine if this {@code ContextConfigurationAttributes} instance has
-	 * class-based resources.
-	 * @return {@code true} if the {@link #getClasses() classes} array is not empty
+	 * {@code ContextConfigurationAttributes} 인스턴스가 클래스 기반의 리소스를 가졌는지 정의
+	 *
+	 * @return {@link #getClasses() classes} 배열이 비어있지 않으면 {@code true}
 	 * @see #hasResources()
 	 * @see #hasLocations()
 	 */
@@ -241,8 +241,9 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Set the <em>processed</em> resource locations, effectively overriding the
-	 * original value declared via {@link ContextConfiguration @ContextConfiguration}.
+	 * <em>processed</em> 리소스 위치 set, 효과적으로 {@link ContextConfiguration @ContextConfiguration}를
+	 * 통해 선언한 원래 값을 overriding 함.
+	 *
 	 * @see #getLocations()
 	 */
 	public void setLocations(String... locations) {
@@ -250,6 +251,8 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
+	 *
+	 *
 	 * Get the resource locations that were declared via
 	 * {@link ContextConfiguration @ContextConfiguration}.
 	 * <p>Note: this is a mutable property. The returned value may therefore
