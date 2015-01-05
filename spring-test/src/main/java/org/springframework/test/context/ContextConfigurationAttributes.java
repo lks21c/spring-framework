@@ -167,22 +167,20 @@ public class ContextConfigurationAttributes {
 
 
 	/**
+	 * 주어진 {@link ContextConfiguration}의 {@link ContextConfiguration#locations() locations}
+	 * 와 {@link ContextConfiguration#value() value} 어트리뷰트로부터 리소스 위치를 해석함.
 	 *
-	 *
-	 * Resolve resource locations from the {@link ContextConfiguration#locations() locations}
-	 * and {@link ContextConfiguration#value() value} attributes of the supplied
-	 * {@link ContextConfiguration} annotation.
-	 * @throws IllegalStateException if both the locations and value attributes have been declared
+	 * @throws IllegalStateException 만약 두 locations와 value 어트리뷰트가 선언되었을 시
 	 */
 	private static String[] resolveLocations(Class<?> declaringClass, ContextConfiguration contextConfiguration) {
 		return resolveLocations(declaringClass, contextConfiguration.locations(), contextConfiguration.value());
 	}
 
 	/**
-	 * Resolve resource locations from the supplied {@code locations} and
-	 * {@code value} arrays, which correspond to attributes of the same names in
-	 * the {@link ContextConfiguration} annotation.
-	 * @throws IllegalStateException if both the locations and value attributes have been declared
+	 * 주어진 {@link ContextConfiguration}의 {@link ContextConfiguration#locations() locations}
+	 * 와 {@link ContextConfiguration#value() value} 어트리뷰트로부터 리소스 위치를 해석함.
+	 *
+	 * @throws IllegalStateException 만약 두 locations와 value 어트리뷰트가 선언되었을 시
 	 */
 	private static String[] resolveLocations(Class<?> declaringClass, String[] locations, String[] value) {
 		Assert.notNull(declaringClass, "declaringClass must not be null");
@@ -200,17 +198,16 @@ public class ContextConfigurationAttributes {
 
 
 	/**
-	 * Get the {@linkplain Class class} that declared the
-	 * {@link ContextConfiguration @ContextConfiguration} annotation.
-	 * @return the declaring class (never {@code null})
+	 * {@link ContextConfiguration @ContextConfiguration} 어노테이션을 선언한 {@linkplain Class class}를 가져옴.
+	 * @return 선언한 클래스(절대 {@code null}이면 안됨)
 	 */
 	public Class<?> getDeclaringClass() {
 		return this.declaringClass;
 	}
 
 	/**
-	 * Set the <em>processed</em> annotated classes, effectively overriding the
-	 * original value declared via {@link ContextConfiguration @ContextConfiguration}.
+	 * <em>processed</em> 어노테이션 클래스를 set함, 효과적으로 {@link ContextConfiguration @ContextConfiguration}를
+	 * 통해 선언한 원래 값을 overriding 함.
 	 * @see #getClasses()
 	 */
 	public void setClasses(Class<?>... classes) {
@@ -218,12 +215,12 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Get the annotated classes that were declared via
-	 * {@link ContextConfiguration @ContextConfiguration}.
-	 * <p>Note: this is a mutable property. The returned value may therefore
-	 * represent a <em>processed</em> value that does not match the original value
-	 * declared via {@link ContextConfiguration @ContextConfiguration}.
-	 * @return the annotated classes; potentially {@code null} or <em>empty</em>
+	 * {@link ContextConfiguration @ContextConfiguration}를 통해 선언된 어노테이션 클래스를 가져옴.
+	 *
+	 * <p>노트: 이것은 변할수 있는 프로퍼티임. 리턴값은 그러므로 <em>processed</em>값을 나타냄({@link ContextConfiguration @ContextConfiguration}를
+	 * 통해 선언한 원래 값이랑 다를 수 있음).</p>
+	 *
+	 * @return 어노테이션 클래스;잠재적으로 {@code null} 이나 <em>empty</em>
 	 * @see ContextConfiguration#classes
 	 * @see #setClasses(Class[])
 	 */
@@ -232,6 +229,7 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
+	 *
 	 * Determine if this {@code ContextConfigurationAttributes} instance has
 	 * class-based resources.
 	 * @return {@code true} if the {@link #getClasses() classes} array is not empty
