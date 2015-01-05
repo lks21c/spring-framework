@@ -16,11 +16,8 @@
 
 package org.springframework.test.context;
 
-import java.util.Arrays;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -29,9 +26,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+
 /**
- * {@code ContextConfigurationAttributes} encapsulates the context configuration
- * attributes declared via {@link ContextConfiguration @ContextConfiguration}.
+ * {@code ContextConfigurationAttributes}는
+ * {@link ContextConfiguration @ContextConfiguration}를 통해 정의된 context configuration 어트리뷰트를 감쌈.
  *
  * @author Sam Brannen
  * @since 3.1
@@ -61,11 +60,11 @@ public class ContextConfigurationAttributes {
 
 
 	/**
-	 * Construct a new {@link ContextConfigurationAttributes} instance for the
-	 * supplied {@link ContextConfiguration @ContextConfiguration} annotation and
-	 * the {@linkplain Class test class} that declared it.
-	 * @param declaringClass the test class that declared {@code @ContextConfiguration}
-	 * @param contextConfiguration the annotation from which to retrieve the attributes
+	 *
+	 * 주어진 {@link ContextConfiguration @ContextConfiguration} 어노테이션과
+	 * {@code @ContextConfiguration}가 선언된 {@linkplain Class test class}를 위한 {@link ContextConfigurationAttributes} 인스턴스 생성.
+	 * @param declaringClass {@code @ContextConfiguration}를 선언한 테스트 클래스
+	 * @param contextConfiguration 어떤 어트리뷰트를 얻을지 정한 어노테이션
 	 */
 	public ContextConfigurationAttributes(Class<?> declaringClass, ContextConfiguration contextConfiguration) {
 		this(declaringClass, resolveLocations(declaringClass, contextConfiguration), contextConfiguration.classes(),
@@ -74,12 +73,10 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Construct a new {@link ContextConfigurationAttributes} instance for the
-	 * supplied {@link AnnotationAttributes} (parsed from a
-	 * {@link ContextConfiguration @ContextConfiguration} annotation) and
-	 * the {@linkplain Class test class} that declared them.
-	 * @param declaringClass the test class that declared {@code @ContextConfiguration}
-	 * @param annAttrs the annotation attributes from which to retrieve the attributes
+	 *
+	 * ContextConfigurationAttributes 생성자
+	 * @param declaringClass {@code @ContextConfiguration}를 선언한 테스트 클래스
+	 * @param annAttrs  어떤 어트리뷰트를 얻을지 정한 어노테이션
 	 */
 	@SuppressWarnings("unchecked")
 	public ContextConfigurationAttributes(Class<?> declaringClass, AnnotationAttributes annAttrs) {
@@ -92,19 +89,14 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Construct a new {@link ContextConfigurationAttributes} instance for the
-	 * {@linkplain Class test class} that declared the
-	 * {@link ContextConfiguration @ContextConfiguration} annotation and its
-	 * corresponding attributes.
-	 * @param declaringClass the test class that declared {@code @ContextConfiguration}
-	 * @param locations the resource locations declared via {@code @ContextConfiguration}
-	 * @param classes the annotated classes declared via {@code @ContextConfiguration}
-	 * @param inheritLocations the {@code inheritLocations} flag declared via {@code @ContextConfiguration}
-	 * @param contextLoaderClass the {@code ContextLoader} class declared via {@code @ContextConfiguration}
-	 * @throws IllegalArgumentException if the {@code declaringClass} or {@code contextLoaderClass} is
-	 * {@code null}
-	 * @deprecated as of Spring 3.2, use
-	 * {@link #ContextConfigurationAttributes(Class, String[], Class[], boolean, Class[], boolean, String, Class)}
+	 * ContextConfigurationAttributes 생성자
+	 * @param declaringClass {@code @ContextConfiguration}를 선언한 테스트 클래스
+	 * @param locations {@code @ContextConfiguration}를 통해 정의된 리소스 위치
+	 * @param classes {@code @ContextConfiguration}를 통해 정의된 어노테이션 클래스
+	 * @param inheritLocations {@code @ContextConfiguration}를 통해 정의된 {@code inheritLocations} 플래그
+	 * @param contextLoaderClass {@code @ContextConfiguration}를 통해 정의된 {@code ContextLoader} 클래스
+	 * @throws IllegalArgumentException 만약 {@code declaringClass} 또는 {@code contextLoaderClass} 가 {@code null}일 경우
+	 * @deprecated 스프링 3.2 출시후, {@link #ContextConfigurationAttributes(Class, String[], Class[], boolean, Class[], boolean, String, Class)}를 쓸 것
 	 * instead
 	 */
 	@Deprecated
@@ -115,19 +107,15 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Construct a new {@link ContextConfigurationAttributes} instance for the
-	 * {@linkplain Class test class} that declared the
-	 * {@link ContextConfiguration @ContextConfiguration} annotation and its
-	 * corresponding attributes.
+	 * ContextConfigurationAttributes 생성자
 	 * @param declaringClass the test class that declared {@code @ContextConfiguration}
-	 * @param locations the resource locations declared via {@code @ContextConfiguration}
-	 * @param classes the annotated classes declared via {@code @ContextConfiguration}
-	 * @param inheritLocations the {@code inheritLocations} flag declared via {@code @ContextConfiguration}
-	 * @param initializers the context initializers declared via {@code @ContextConfiguration}
-	 * @param inheritInitializers the {@code inheritInitializers} flag declared via {@code @ContextConfiguration}
-	 * @param contextLoaderClass the {@code ContextLoader} class declared via {@code @ContextConfiguration}
-	 * @throws IllegalArgumentException if the {@code declaringClass} or {@code contextLoaderClass} is
-	 * {@code null}
+	 * @param locations {@code @ContextConfiguration}를 통해 정의된 리소스 위치
+	 * @param classes {@code @ContextConfiguration}를 통해 정의된 어노테이션 클래스
+	 * @param inheritLocations {@code @ContextConfiguration}를 통해 정의된 {@code inheritLocations} 플래그
+	 * @param initializers {@code @ContextConfiguration}를 통해 정의된 context initializers
+	 * @param inheritInitializers {@code @ContextConfiguration}를 통해 정의된 {@code inheritInitializers} 플래그
+	 * @param contextLoaderClass {@code @ContextConfiguration}를 통해 정의된 {@code ContextLoader} 클래스
+	 * @throws IllegalArgumentException 만약 {@code declaringClass} 또는 {@code contextLoaderClass} 가 {@code null}일 경우
 	 */
 	public ContextConfigurationAttributes(
 			Class<?> declaringClass, String[] locations, Class<?>[] classes, boolean inheritLocations,
@@ -139,20 +127,16 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Construct a new {@link ContextConfigurationAttributes} instance for the
-	 * {@linkplain Class test class} that declared the
-	 * {@link ContextConfiguration @ContextConfiguration} annotation and its
-	 * corresponding attributes.
-	 * @param declaringClass the test class that declared {@code @ContextConfiguration}
-	 * @param locations the resource locations declared via {@code @ContextConfiguration}
-	 * @param classes the annotated classes declared via {@code @ContextConfiguration}
-	 * @param inheritLocations the {@code inheritLocations} flag declared via {@code @ContextConfiguration}
+	 * ContextConfigurationAttributes 생성자
+	 * @param declaringClass {@code @ContextConfiguration}를 선언한 테스트 클래스
+	 * @param locations {@code @ContextConfiguration}를 통해 정의된 리소스 위치
+	 * @param classes {@code @ContextConfiguration}를 통해 정의된 어노테이션 클래스
+	 * @param inheritLocations {@code @ContextConfiguration}를 통해 정의된 {@code inheritLocations} 플래그
 	 * @param initializers the context initializers declared via {@code @ContextConfiguration}
 	 * @param inheritInitializers the {@code inheritInitializers} flag declared via {@code @ContextConfiguration}
 	 * @param name the name of level in the context hierarchy, or {@code null} if not applicable
-	 * @param contextLoaderClass the {@code ContextLoader} class declared via {@code @ContextConfiguration}
-	 * @throws IllegalArgumentException if the {@code declaringClass} or {@code contextLoaderClass} is
-	 * {@code null}
+	 * @param contextLoaderClass {@code @ContextConfiguration}를 통해 정의된 {@code ContextLoader} 클래스
+	 * @throws IllegalArgumentException 만약 {@code declaringClass} 또는 {@code contextLoaderClass} 가 {@code null}일 경우
 	 */
 	public ContextConfigurationAttributes(
 			Class<?> declaringClass, String[] locations, Class<?>[] classes, boolean inheritLocations,
@@ -183,6 +167,8 @@ public class ContextConfigurationAttributes {
 
 
 	/**
+	 *
+	 *
 	 * Resolve resource locations from the {@link ContextConfiguration#locations() locations}
 	 * and {@link ContextConfiguration#value() value} attributes of the supplied
 	 * {@link ContextConfiguration} annotation.
@@ -386,9 +372,8 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Generate a unique hash code for all properties of this
-	 * {@code ContextConfigurationAttributes} instance excluding the
-	 * {@linkplain #getName() name}.
+	 * {@linkplain #getName() name}를 제외한 이 {@code ContextConfigurationAttributes} 인스턴스의
+	 * 모든 프로퍼티의 유니크 해시 코드를 생성함.
 	 */
 	@Override
 	public int hashCode() {
@@ -400,8 +385,7 @@ public class ContextConfigurationAttributes {
 	}
 
 	/**
-	 * Provide a String representation of the context configuration attributes
-	 * and declaring class.
+	 * context configuration attributes와 정의된 클래스를 문자열로 제공함.
 	 */
 	@Override
 	public String toString() {

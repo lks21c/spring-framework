@@ -134,16 +134,15 @@ public @interface ContextConfiguration {
      * {@link ConfigurableApplicationContext}를 initializing 하는데 쓰일 어플리케이션 context
      * <em>initializer 클래스</em>.
 	 *
-     * <p></p>
+     * <p>각각의 정이된 initializer에게 제공받는 구체적인 {@code ConfigurableApplicationContext} 타입은
+	 * 반드시 사용되는 {@link SmartContextLoader}에 의해 생성된 {@code ApplicationContext}와 호환되어야 함.
+	 * </p>
      *
-	 * <p>The concrete {@code ConfigurableApplicationContext} type supported by each
-	 * declared initializer must be compatible with the type of {@code ApplicationContext}
-	 * created by the {@link SmartContextLoader} in use.
-	 *
-	 * <p>{@code SmartContextLoader} implementations typically detect whether
-	 * Spring's {@link org.springframework.core.Ordered Ordered} interface has been
-	 * implemented or if the @{@link org.springframework.core.annotation.Order Order}
-	 * annotation is present and sort instances accordingly prior to invoking them.
+	 * <p>
+	 * {@code SmartContextLoader} 구현체는 일반적으로
+	 * 스프링의 {@link org.springframework.core.Ordered Ordered}가 구현되었는지나 @{@link org.springframework.core.annotation.Order Order}
+	 * 어노테이션이 존재하고 호출전에 인스턴스들을 정렬하는지 감지함.
+	 * </p>
 	 *
 	 * @since 3.2
 	 * @see org.springframework.context.ApplicationContextInitializer
@@ -154,29 +153,26 @@ public @interface ContextConfiguration {
 	Class<? extends ApplicationContextInitializer<? extends ConfigurableApplicationContext>>[] initializers() default {};
 
 	/**
-	 * Whether or not {@link #locations resource locations} or <em>annotated
-	 * classes</em> from test superclasses should be <em>inherited</em>.
+	 * 테스트 부모 클래스로 부터 {@link #locations resource locations} 또는 <em>어노테이션 클래스</em>이
+	 * 상속되어야 하는지 여부.
 	 *
-	 * <p>The default value is {@code true}. This means that an annotated
-	 * class will <em>inherit</em> the resource locations or annotated classes
-	 * defined by test superclasses. Specifically, the resource locations or
-	 * annotated classes for a given test class will be appended to the list of
-	 * resource locations or annotated classes defined by test superclasses.
-	 * Thus, subclasses have the option of <em>extending</em> the list of resource
-	 * locations or annotated classes.
+	 * <p>기본 값은 {@code true}. 이 의미는 어노테이션 된 클래스는 테스트 부모클래스에 정의한 {@link #locations resource locations} 또는 <em>어노테이션 클래스</em>
+	 * 를 <em>상속 한다</em>는 의미.
+	 * 구체적으로, 자식 클래스의 {@link #locations resource locations} 또는 <em>어노테이션 클래스</em>는 부모 클래스의 {@link #locations resource locations} 또는 <em>어노테이션 클래스</em> 리스트에
+	 * 덧붙여짐.
+	 * </p>
 	 *
-	 * <p>If {@code inheritLocations} is set to {@code false}, the
-	 * resource locations or annotated classes for the annotated class
-	 * will <em>shadow</em> and effectively replace any resource locations
-	 * or annotated classes defined by superclasses.
+	 * <p> 만약 {@code inheritLocations}이 {@code false}이면,
+	 * 부모 클래스에 정의된 {@link #locations resource locations} 또는 <em>어노테이션 클래스</em>는 <em>감춰지고</em> 효과적으로 치환됨.
+	 * </p>
 	 *
-	 * <p>In the following example that uses path-based resource locations, the
-	 * {@link org.springframework.context.ApplicationContext ApplicationContext}
-	 * for {@code ExtendedTest} will be loaded from
-	 * {@code "base-context.xml"} <strong>and</strong>
-	 * {@code "extended-context.xml"}, in that order. Beans defined in
-	 * {@code "extended-context.xml"} may therefore override those defined
-	 * in {@code "base-context.xml"}.
+	 * <p>아래의 예제는 path-based resource location을 사용함.
+	 * {@code ExtendedTest}를 위한 {@link org.springframework.context.ApplicationContext ApplicationContext}는
+	 * {@code "base-context.xml"} <strong>와</strong> {@code "extended-context.xml"}를 순서대로 읽음.
+	 * 그러므로 {@code "extended-context.xml"}에 정의된 빈 설정은 {@code "base-context.xml"}에 정의된 빈 설정을
+	 * override할 가능성이 있음.
+	 * </p>
+	 *
 	 * <pre class="code">
 	 * &#064;ContextConfiguration("base-context.xml")
 	 * public class BaseTest {
@@ -189,14 +185,14 @@ public @interface ContextConfiguration {
 	 * }
 	 * </pre>
 	 *
-	 * <p>Similarly, in the following example that uses annotated
-	 * classes, the
-	 * {@link org.springframework.context.ApplicationContext ApplicationContext}
-	 * for {@code ExtendedTest} will be loaded from the
-	 * {@code BaseConfig} <strong>and</strong> {@code ExtendedConfig}
-	 * configuration classes, in that order. Beans defined in
-	 * {@code ExtendedConfig} may therefore override those defined in
-	 * {@code BaseConfig}.
+	 * <p>유사하게, 아래의 예제는 어노테이션 클래스를 사용하여,
+	 * {@code ExtendedTest}를 위한 {@link org.springframework.context.ApplicationContext ApplicationContext}를 {@code BaseConfig} <strong>와</strong> {@code ExtendedConfig}
+	 * 설정으로 부터 읽음.
+	 * {@code ExtendedConfig}에 정의된 빈 설정은 {@code BaseConfig}에 정의된 빈 설정을
+	 * override할 가능성이 있음.
+	 *
+	 * 
+	 * </p>
 	 * <pre class="code">
 	 * &#064;ContextConfiguration(classes=BaseConfig.class)
 	 * public class BaseTest {
@@ -213,28 +209,28 @@ public @interface ContextConfiguration {
 	boolean inheritLocations() default true;
 
 	/**
-	 * Whether or not {@linkplain #initializers context initializers} from test
-	 * superclasses should be <em>inherited</em>.
+	 * 부모 테스트 클래스로 부터 {@linkplain #initializers context initializers}를 <em>상속 받을 지</em> 여부.
 	 *
-	 * <p>The default value is {@code true}. This means that an annotated
-	 * class will <em>inherit</em> the application context initializers defined
-	 * by test superclasses. Specifically, the initializers for a given test
-	 * class will be added to the set of initializers defined by test
-	 * superclasses. Thus, subclasses have the option of <em>extending</em> the
-	 * set of initializers.
+	 * <p>
+	 * 기본값은 {@code true}. 이말은 부모 클래스에 정의된 application context initializer가 <em>상속된다</em>는 뜻.
+	 * 구체적으로, 테스트 클래스의 initializer가 부모 클래스의 initializer 집합에 덧붙여짐. 그러므로, 자식클래스는 initializer를
+	 * 상속받을 수 있는 옵션이 있음.
+	 * </p>
 	 *
-	 * <p>If {@code inheritInitializers} is set to {@code false}, the
-	 * initializers for the annotated class will <em>shadow</em> and effectively
-	 * replace any initializers defined by superclasses.
+	 * <p> 만약 값이 {@code false}이면,
+	 * 부모 클래스에 정의된 initializer는 <em>감춰지고</em> 효과적으로 치환됨.
+	 * </p>
 	 *
-	 * <p>In the following example, the
-	 * {@link org.springframework.context.ApplicationContext ApplicationContext}
-	 * for {@code ExtendedTest} will be initialized using
-	 * {@code BaseInitializer} <strong>and</strong> {@code ExtendedInitializer}.
-	 * Note, however, that the order in which the initializers are invoked
-	 * depends on whether they implement {@link org.springframework.core.Ordered
-	 * Ordered} or are annotated with {@link org.springframework.core.annotation.Order
-	 * &#064;Order}.
+	 * <p>
+	 * 아래의 예제에서,
+	 * {@code ExtendedTest}를 위한 {@link org.springframework.context.ApplicationContext ApplicationContext}은
+	 * {@code BaseInitializer} <strong>와</strong> {@code ExtendedInitializer}로 initialize됨.
+	 * 노트: 그러나, 어떤 initializer가 먼저 호출될지는 그들이 {@link org.springframework.core.Ordered
+	 * Ordered} 또는 {@link org.springframework.core.annotation.Order
+	 * &#064;Order}에 따라 달라짐.
+	 *
+	 * </p>
+	 *
 	 * <pre class="code">
 	 * &#064;ContextConfiguration(initializers = BaseInitializer.class)
 	 * public class BaseTest {
