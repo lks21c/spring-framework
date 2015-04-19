@@ -31,15 +31,13 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
 
 /**
- * {@link javax.servlet.Filter} that generates an {@code ETag} value based on the
- * content on the response. This ETag is compared to the {@code If-None-Match}
- * header of the request. If these headers are equal, the response content is
- * not sent, but rather a {@code 304 "Not Modified"} status instead.
- *
- * <p>Since the ETag is based on the response content, the response
- * (e.g. a {@link org.springframework.web.servlet.View}) is still rendered.
- * As such, this filter only saves bandwidth, not server performance.
- *
+ * {@link javax.servlet.Filter}로써 response의 content에 기반해 {@code ETag} 값을 생성함. <br />
+ * 이 ETAG 값은 request 헤더의 {@code If-None-Match} 값과 비교됨. <br />
+ * 만약 이 헤더값들이 같으면, response content는 전송되지 않고 {@code 304 "Not Modified"} status를 대신 리턴함. <br />
+ * 
+ * <p> ETag는 response content에 기반하기 때문에, {@link org.springframework.web.servlet.View}는 여전히 렌더링됨.
+ * 이 필터는 서버 퍼포먼스가 아닌 bandwidth만 절약 됨.
+ * 
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
