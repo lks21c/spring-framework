@@ -131,18 +131,18 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 	}
 
 	/**
-	 * Indicates whether the given request and response are eligible for ETag generation.
-	 * <p>The default implementation returns {@code true} if all conditions match:
+	 * 주어진 request와 response가 ETag 생성에 적합한지 나타냄.
+	 * <p> 기본 구현은 아래의 조건이 모두 만족할때 {@code true}를 리턴함.
 	 * <ul>
-	 * <li>response status codes in the {@code 2xx} series</li>
-	 * <li>request method is a GET</li>
-	 * <li>response Cache-Control header is not set or does not contain a "no-store" directive</li>
+	 * <li>response status 코드가 {@code 2xx}일때</li>
+	 * <li>request method가 GET일때</li>
+	 * <li>response Cache-Control 헤더가 설정되어 있지 않거나 "no-store" 디렉티브를 포함하지 않을 때</li>
 	 * </ul>
-	 * @param request the HTTP request
-	 * @param response the HTTP response
-	 * @param responseStatusCode the HTTP response status code
-	 * @param responseBody the response body
-	 * @return {@code true} if eligible for ETag generation; {@code false} otherwise
+	 * @param request HTTP request
+	 * @param response HTTP response
+	 * @param responseStatusCode HTTP response status code
+	 * @param responseBody response body
+	 * @return {@code true} 만약 ETag 생성이 적합한 경우;나머지 경우는 {@code false}
 	 */
 	protected boolean isEligibleForEtag(HttpServletRequest request, HttpServletResponse response,
 			int responseStatusCode, byte[] responseBody) {
@@ -158,10 +158,11 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 	}
 
 	/**
-	 * Generate the ETag header value from the given response body byte array.
-	 * <p>The default implementation generates an MD5 hash.
-	 * @param bytes the response body as byte array
-	 * @return the ETag header value
+	 * response body byte array로부터 ETag 헤더값을 생성함.
+	 * 
+	 * <p> 기본 구현은 MD5 해시를 생성함.
+	 * @param bytes response body의 byte array
+	 * @return ETag 헤더 값
 	 * @see org.springframework.util.DigestUtils
 	 */
 	protected String generateETagHeaderValue(byte[] bytes) {
