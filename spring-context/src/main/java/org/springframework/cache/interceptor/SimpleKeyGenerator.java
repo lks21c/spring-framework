@@ -57,5 +57,4 @@ public class SimpleKeyGenerator implements KeyGenerator {
 		}
 		return new SimpleKey(params);
 	}
-
 }

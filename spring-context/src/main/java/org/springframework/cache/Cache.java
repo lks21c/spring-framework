@@ -17,12 +17,11 @@
 package org.springframework.cache;
 
 /**
- * Interface that defines the common cache operations.
- *
- * <b>Note:</b> Due to the generic use of caching, it is recommended that
- * implementations allow storage of <tt>null</tt> values (for example to
- * cache methods that return {@code null}).
- *
+ * 일반적인 캐시 operation을 정의한 인터페이스. <br />
+ * <br />
+ * <b>노트:</b>일반적인 캐싱의 사용을 위해, 스토리지가 <tt>null</tt>값을 허용하게 구현하기를 추천함. <br />
+ * (예: {@code null}을 리턴하는 캐시 메소드)
+ * 
  * @author Costin Leau
  * @author Juergen Hoeller
  * @since 3.1
@@ -30,21 +29,22 @@ package org.springframework.cache;
 public interface Cache {
 
 	/**
-	 * Return the cache name.
+	 * 캐시 이름을 리턴
 	 */
 	String getName();
 
 	/**
-	 * Return the the underlying native cache provider.
+	 * 네이티브 캐시 제공자를 리턴.
 	 */
 	Object getNativeCache();
 
 	/**
-	 * Return the value to which this cache maps the specified key.
-	 * <p>Returns {@code null} if the cache contains no mapping for this key;
-	 * otherwise, the cached value (which may be {@code null} itself) will
-	 * be returned in a {@link ValueWrapper}.
-	 * @param key the key whose associated value is to be returned
+	 * 파라미터 key값의 캐시 값을 리턴.
+	 * 
+	 * <p>  key값의 캐시가 없으면 {@code null}을 리턴함;
+	 * 그 외의 경우, 캐시 값({@code null}값 일지라도)을 {@link ValueWrapper} 안에 포함하여 리턴함.
+     * 
+	 * @param key 캐시를 가져올 key값
 	 * @return the value to which this cache maps the specified key,
 	 * contained within a {@link ValueWrapper} which may also hold
 	 * a cached {@code null} value. A straight {@code null} being
@@ -111,24 +111,25 @@ public interface Cache {
 	ValueWrapper putIfAbsent(Object key, Object value);
 
 	/**
-	 * Evict the mapping for this key from this cache if it is present.
-	 * @param key the key whose mapping is to be removed from the cache
+	 * 만약 key값의 캐시가 존재하면 제거함.
+	 * @param key 제거할 캐시 key값
 	 */
 	void evict(Object key);
 
 	/**
-	 * Remove all mappings from the cache.
+	 * 캐시의 모든 매핑을 제거함.
+	 * 
 	 */
 	void clear();
 
 
 	/**
-	 * A (wrapper) object representing a cache value.
+	 * 캐시 값을 포함한 wrapping 객체.
 	 */
 	interface ValueWrapper {
 
 		/**
-		 * Return the actual value in the cache.
+		 * 실제 캐시 값을 리턴
 		 */
 		Object get();
 	}
