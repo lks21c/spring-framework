@@ -23,9 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Provide a way to share common cache-related settings at class-level.
- * <p>When this annotation is present on a given class, it provides a set
- * of default settings for any cache operation defined on that class.
+ * 클래스 레벨에서 공통의 캐시와 관련된 설정을 공유하기 위해 제공함.
+ * <p> 주어진 클래스에 이 어노테이션이 존재하면, 해당 클래스에 정의된 모든 캐시 operation 기본 설정을 제공함.  
  *
  * @author Stephane Nicoll
  * @since 4.1

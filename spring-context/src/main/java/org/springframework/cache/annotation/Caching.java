@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Group annotation for multiple cache annotations (of different or the same type).
+ * 북수의 캐시 어노테이션을 그룹화함(다른 타입 또는 같은 타입).
  *
  * @author Costin Leau
  * @author Chris Beams

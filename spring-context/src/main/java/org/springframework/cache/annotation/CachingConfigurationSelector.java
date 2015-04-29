@@ -25,11 +25,10 @@ import org.springframework.context.annotation.AutoProxyRegistrar;
 import org.springframework.util.ClassUtils;
 
 /**
- * Selects which implementation of {@link AbstractCachingConfiguration} should be used
- * based on the value of {@link EnableCaching#mode} on the importing {@code @Configuration}
- * class.
- *
- * <p>Detects the presence of JSR-107 and enables JCache support accordingly.
+ * {@code @Configuration} 에서 import 할 때 {@link EnableCaching#mode}에 근거하여 <br /> 
+ * 어떤 {@link AbstractCachingConfiguration} 구현체가 쓰여야 하는지 선택함. <br /> 
+ * <br />
+ * <p> JSR-107의 존재를 감지하고, 감지되면 JCache support를 활성화함.
  *
  * @author Chris Beams
  * @author Stephane Nicoll

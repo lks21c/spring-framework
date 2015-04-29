@@ -17,7 +17,6 @@
 package org.springframework.cache.annotation;
 
 import java.util.Collection;
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -32,8 +31,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Abstract base {@code @Configuration} class providing common structure for enabling
- * Spring's annotation-driven cache management capability.
+ * 스프링의 어노테이션 기반 캐시 관리를 활성화 하기 위한 일반적인 구조를 제공하는 {@code @Configuration} abstract 클래스들.
  *
  * @author Chris Beams
  * @author Stephane Nicoll

@@ -19,8 +19,8 @@ package org.springframework.cache;
 import java.util.Collection;
 
 /**
- * Spring's central cache manager SPI.
- * Allows for retrieving named {@link Cache} regions.
+ * 스프링의 중앙 캐시 매니저 SPI(Service Provider Interface).
+ * {@link Cache} 리전들을 획득함.
  *
  * @author Costin Leau
  * @since 3.1
@@ -28,15 +28,15 @@ import java.util.Collection;
 public interface CacheManager {
 
 	/**
-	 * Return the cache associated with the given name.
-	 * @param name the cache identifier (must not be {@code null})
-	 * @return the associated cache, or {@code null} if none found
+	 * 주어진 이름의 캐시를 리턴함.
+	 * @param name 캐시 이름({@code null}이면 안됨)
+	 * @return 연관된 캐시, 없을시 {@code null} 리턴
 	 */
 	Cache getCache(String name);
 
 	/**
-	 * Return a collection of the cache names known by this manager.
-	 * @return the names of all caches known by the cache manager
+	 * 이 cache manager에게 알려진 캐시 이름들을 리턴함.
+	 * @return 캐시 이름들
 	 */
 	Collection<String> getCacheNames();
 

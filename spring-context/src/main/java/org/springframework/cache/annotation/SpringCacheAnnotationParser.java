@@ -32,8 +32,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Strategy implementation for parsing Spring's {@link Caching}, {@link Cacheable},
- * {@link CacheEvict} and {@link CachePut} annotations.
+ * 스프링의 {@link Caching}, {@link Cacheable}, {@link CacheEvict} and {@link CachePut} 어노테이션을 <br />
+ * 파싱하기 위한 전략 구현체.
  *
  * @author Costin Leau
  * @author Juergen Hoeller
@@ -254,7 +254,7 @@ public class SpringCacheAnnotationParser implements CacheAnnotationParser, Seria
 
 
 	/**
-	 * Provides default settings for a given set of cache operations.
+	 * 주어진 캐시 operation 집합의 기본 셋팅을 제공함.
 	 */
 	static class DefaultCacheConfig {
 

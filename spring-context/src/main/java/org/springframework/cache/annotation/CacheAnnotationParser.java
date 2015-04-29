@@ -22,10 +22,10 @@ import java.util.Collection;
 import org.springframework.cache.interceptor.CacheOperation;
 
 /**
- * Strategy interface for parsing known caching annotation types.
- * {@link AnnotationCacheOperationSource} delegates to such
- * parsers for supporting specific annotation types such as Spring's own
- * {@link Cacheable}, {@link CachePut} or {@link CacheEvict}.
+ * 알려진 캐시 어노테이션을 파싱하기 위함 전략 인터페이스. <br />
+ *
+ * {@link AnnotationCacheOperationSource}가 파서를 위임하여 특정 어노테이션 타입을 <br />
+ * 지원함. 예: 스프링의 {@link Cacheable}, {@link CachePut} or {@link CacheEvict}. 
  *
  * @author Costin Leau
  * @author Stephane Nicoll
